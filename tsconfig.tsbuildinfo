@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/dynamicicon.tsx","./src/components/resultscreen.tsx","./src/components/startscreen.tsx","./src/components/swipecard.tsx","./src/data/diagnosisdata.ts","./src/types/diagnosis.ts"],"version":"5.6.3"}
