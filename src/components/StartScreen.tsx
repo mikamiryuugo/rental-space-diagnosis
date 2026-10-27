@@ -34,21 +34,21 @@ export const StartScreen: React.FC<StartScreenProps> = ({
       >
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-indigo-400/40 text-indigo-300 text-xs font-bold shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          <span>2026年最新版・レンタルスペース開業スタイル診断</span>
+          <span>現役8店舗手放し運営オーナー監修・開業スタイル診断</span>
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
           あなたの予算×性格でわかる！
           <span className="block mt-1 bg-gradient-to-r from-amber-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent">
-            「勝てるレンスペ開業」
+            「手放しで勝てるレンスペ開業」
           </span>
           9タイプ適性診断
         </h1>
 
         <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm">
-          「興味はあるけど、自分にはどんなやり方が合ってる？」
+          「興味はあるけど、自分にはどんなやり方やプランが合ってる？」
           <br />
-          直感スワイプで{QUESTIONS.length}問に答えるだけで、あなたに最適な開業スタイルと成功戦略がわかります！
+          直感スワイプで{QUESTIONS.length}問に答えるだけで、あなたに最適な開業スタイルと自動化の戦略がわかります！
         </p>
       </motion.div>
 

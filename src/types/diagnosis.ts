@@ -26,13 +26,20 @@ export interface Question {
   noEffect: Partial<ScoreProfile>;
 }
 
+export interface RecommendedCourse {
+  name: '開業保証コース' | '物件探しサポートコース' | '丸投げコース';
+  badge: string;
+  reason: string;
+  features: string[];
+}
+
 export interface PersonaType {
   id: string;
   code: string;
   title: string;
   catchphrase: string;
   badgeText: string;
-  budgetRange: '50万円〜' | '100万円前後' | '150万円前後' | '200万円〜';
+  budgetRange: '30万〜50万円〜' | '50万〜100万円' | '100万円前後' | '150万円前後' | '200万円〜';
   difficulty: '★☆☆☆☆ (初心者向け)' | '★★☆☆☆ (手軽)' | '★★★☆☆ (標準)' | '★★★★☆ (本格派)' | '★★★★★ (プロ志向)';
   expectedReturn: string;
   gradient: string;
@@ -47,6 +54,7 @@ export interface PersonaType {
     operationStyle: string;
   };
   recommendedSpaceTypes: string[];
+  recommendedCourse: RecommendedCourse;
   lineBenefitHighlight: string;
   /** 理想とするスコアプロファイル（0〜100）。ユーザーのスコアとの類似度計算および優先分岐に使用 */
   targetProfile: ScoreProfile;

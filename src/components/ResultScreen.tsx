@@ -15,6 +15,7 @@ import {
   TrendingUp,
   Layers,
   ExternalLink,
+  Crown,
 } from 'lucide-react';
 import { PersonaType, ScoreProfile } from '../types/diagnosis';
 import { PERSONA_TYPES } from '../data/diagnosisData';
@@ -29,9 +30,9 @@ interface ResultScreenProps {
 }
 
 /**
- * 公式LINEの登録URL（本番運用時はご自身の公式LINE友だち追加URLに差し替えてください）
+ * 公式LINEの登録URL（LPの公式LINEリンク https://lin.ee/nkBUi41 を設定済み）
  */
-const OFFICIAL_LINE_URL = 'https://line.me/R/ti/p/@example_rentalspace';
+const OFFICIAL_LINE_URL = 'https://lin.ee/nkBUi41';
 
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   primary,
@@ -48,17 +49,17 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
 
   // 予算スコアから4段階の目安ラベルを算出
   const getBudgetLabel = (val: number) => {
-    if (val >= 75) return '200万円〜（大型・丸投げOK）';
-    if (val >= 55) return '150万円前後（中規模・外注併用）';
-    if (val >= 35) return '100万円前後（標準スタート）';
-    return '50万円前後（スモール・DIY重視）';
+    if (val >= 75) return '150万〜200万円〜（大型・丸投げOK）';
+    if (val >= 55) return '100万〜150万円（中規模・物件サポート）';
+    if (val >= 35) return '50万〜100万円（標準スタート）';
+    return '30万〜50万円前後（スモール・DIY重視）';
   };
 
   const axes = [
     {
       label: '1. 予算・投資スケール',
       value: score.budget,
-      leftText: '50万円〜少額派',
+      leftText: '30万〜50万円少額派',
       rightText: '150万〜200万+本格派',
       badge: getBudgetLabel(score.budget),
       color: 'from-amber-400 to-orange-500',
@@ -66,9 +67,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     {
       label: '2. 作業・DIY耐性',
       value: score.diy,
-      leftText: 'プロに丸投げしたい',
-      rightText: 'DIY・設営が好き',
-      badge: score.diy >= 50 ? '自力設営でコスト削減◎' : '外注・代行で時短推奨',
+      leftText: '設営もプロに任せたい',
+      rightText: '家具組立・DIYが好き',
+      badge: score.diy >= 50 ? '自力設営で初期費用圧縮◎' : '丸投げ・代行で時短推奨',
       color: 'from-emerald-400 to-teal-500',
     },
     {
@@ -76,15 +77,15 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       value: score.attachment,
       leftText: '遠隔・自動で儲かればOK',
       rightText: '自分も使いたい・地元密着',
-      badge: score.attachment >= 50 ? 'こだわり空間・自己利用◎' : '完全遠隔・数値重視◎',
+      badge: score.attachment >= 50 ? 'こだわり空間・スタジオ向き' : '完全遠隔・数値＆M&A重視',
       color: 'from-pink-400 to-purple-500',
     },
     {
       label: '4. 物件探し・内見耐性',
       value: score.search,
-      leftText: '苦手・プロに任せたい',
+      leftText: '物件探しはプロに任せたい',
       rightText: '物件検索・内見が楽しい',
-      badge: score.search >= 50 ? 'お宝物件の発掘向き' : '物件紹介・代行ルート向き',
+      badge: score.search >= 50 ? '業者開拓で自力発掘向き' : '物件探しサポート推奨',
       color: 'from-sky-400 to-indigo-500',
     },
     {
@@ -92,7 +93,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       value: score.mindset,
       leftText: '徹底して手堅く・慎重派',
       rightText: '自責思考でハイリターン狙い',
-      badge: score.mindset >= 55 ? 'オーナー適性・推進力◎' : 'ローリスク・堅実モデル推奨',
+      badge: score.mindset >= 55 ? 'オーナー適性・推進力◎' : '開業保証で手堅くスタート推奨',
       color: 'from-rose-400 to-red-500',
     },
   ];
@@ -149,7 +150,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           {/* スペック3点バー */}
           <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
-              <span className="text-white/70 block text-[10px]">推奨初期予算</span>
+              <span className="text-white/70 block text-[10px]">自己資金目安（実費）</span>
               <span className="font-black text-sm text-amber-300">{primary.budgetRange}</span>
             </div>
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
@@ -192,11 +193,11 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           </ul>
         </div>
 
-        {/* 陥りがちな注意点 */}
+        {/* 陥りがちな注意点（リアルなハードル） */}
         <div className="bg-rose-950/30 border border-rose-500/25 rounded-2xl p-4 space-y-2.5">
           <h3 className="text-xs font-black text-rose-300 flex items-center gap-1.5">
             <AlertTriangle className="w-4 h-4 text-rose-400" />
-            <span>気をつけるべき落とし穴</span>
+            <span>知っておくべきリアルなハードル・注意点</span>
           </h3>
           <ul className="space-y-2 text-xs text-slate-200 leading-relaxed">
             {primary.weaknesses.map((wk, i) => (
@@ -220,7 +221,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="bg-slate-800/70 rounded-2xl p-4 border border-slate-700/70 space-y-1.5">
             <div className="flex items-center gap-1.5 text-xs font-black text-indigo-300">
               <MapPin className="w-4 h-4 text-indigo-400" />
-              <span>STEP 1：狙うべきエリアと物件条件</span>
+              <span>STEP 1：狙うべきエリアと物件選定</span>
             </div>
             <p className="text-xs text-slate-200 leading-relaxed">
               {primary.strategy.areaAndProperty}
@@ -230,7 +231,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="bg-slate-800/70 rounded-2xl p-4 border border-slate-700/70 space-y-1.5">
             <div className="flex items-center gap-1.5 text-xs font-black text-pink-300">
               <Sparkles className="w-4 h-4 text-pink-400" />
-              <span>STEP 2：勝てるコンセプト＆内装設営</span>
+              <span>STEP 2：コンセプト設計＆自社集客の構築</span>
             </div>
             <p className="text-xs text-slate-200 leading-relaxed">
               {primary.strategy.conceptAndSetup}
@@ -240,7 +241,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="bg-slate-800/70 rounded-2xl p-4 border border-slate-700/70 space-y-1.5">
             <div className="flex items-center gap-1.5 text-xs font-black text-emerald-300">
               <Settings className="w-4 h-4 text-emerald-400" />
-              <span>STEP 3：オープン後の運営・自動化スタイル</span>
+              <span>STEP 3：完全自動化と清掃外注マニュアル化</span>
             </div>
             <p className="text-xs text-slate-200 leading-relaxed">
               {primary.strategy.operationStyle}
@@ -251,7 +252,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         {/* 相性抜群のスペースジャンル */}
         <div className="pt-1">
           <p className="text-xs font-bold text-slate-400 mb-2">
-            ▼ あなたと相性抜群のスペースジャンル
+            ▼ あなたと相性抜群のスペース用途
           </p>
           <div className="flex flex-wrap gap-2">
             {primary.recommendedSpaceTypes.map((tag, i) => (
@@ -263,6 +264,73 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
               </span>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* あなたに最適な開業伴走サポートプラン（LPの3コースと完全連動） */}
+      <div className="bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-900 border-2 border-amber-500/40 rounded-3xl p-5 space-y-4 shadow-xl">
+        <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
+          <div className="flex items-center gap-2">
+            <Crown className="w-5 h-5 text-amber-400" />
+            <h2 className="text-base font-black text-white">あなたに最適な伴走サポートプラン</h2>
+          </div>
+          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-400/30">
+            現役8店舗オーナー直伝
+          </span>
+        </div>
+
+        <div className="bg-slate-950/80 border border-amber-500/30 rounded-2xl p-4 space-y-2.5">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <span className="text-xs font-bold text-amber-300">
+              ★ 診断結果に基づく推奨プラン
+            </span>
+            <span className="px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-black text-[11px]">
+              {primary.recommendedCourse.badge}
+            </span>
+          </div>
+
+          <div className="text-xl font-black text-white">
+            『{primary.recommendedCourse.name}』
+          </div>
+
+          <p className="text-xs text-slate-200 leading-relaxed">
+            {primary.recommendedCourse.reason}
+          </p>
+
+          <ul className="space-y-1.5 pt-2 border-t border-slate-800 text-xs text-slate-300">
+            {primary.recommendedCourse.features.map((feat, i) => (
+              <li key={i} className="flex items-start gap-2">
+                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
+                <span>{feat}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* 3コース比較ミニガイド */}
+        <div className="grid grid-cols-3 gap-1.5 text-[10px]">
+          {[
+            { name: '開業保証コース', desc: '教材＋無制限相談＋開業まで保証' },
+            { name: '物件探しサポート', desc: '上記＋プロが物件を探索・提案' },
+            { name: '丸投げコース', desc: '物件探し〜開業準備まで完全代行' },
+          ].map((c, idx) => {
+            const isMatched = primary.recommendedCourse.name.includes(c.name);
+            return (
+              <div
+                key={idx}
+                className={`rounded-xl p-2 border flex flex-col justify-between ${
+                  isMatched
+                    ? 'bg-amber-500/20 border-amber-400 text-white font-bold'
+                    : 'bg-slate-900/60 border-slate-800 text-slate-400'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="truncate font-black">{c.name}</span>
+                </div>
+                <span className="text-[9px] leading-tight opacity-85">{c.desc}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -328,7 +396,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <div className="bg-slate-950 rounded-[22px] p-5 sm:p-6 space-y-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#06C755]/20 border border-[#06C755]/40 text-[#4ade80] text-xs font-black">
             <Gift className="w-4 h-4" />
-            <span>診断完了者限定・スペシャル無料特典</span>
+            <span>診断完了者限定・公式LINE無料プレゼント</span>
           </div>
 
           <h2 className="text-lg sm:text-xl font-black text-white leading-snug">
@@ -340,7 +408,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-4 space-y-2.5">
             <div className="text-xs font-black text-amber-300 flex items-center gap-1.5">
               <Sparkles className="w-4 h-4 shrink-0" />
-              <span>{primary.title} 専用の特典内容：</span>
+              <span>{primary.title} 専用の特典＆ご案内：</span>
             </div>
             <p className="text-xs sm:text-sm font-bold text-white bg-emerald-950/50 border border-emerald-500/30 rounded-xl p-3 leading-relaxed">
               🎁 『{primary.lineBenefitHighlight}』
@@ -348,33 +416,34 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             <ul className="space-y-1.5 text-xs text-slate-300 pt-1">
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#06C755] shrink-0" />
-                <span>実際に月利10万〜25万円を達成したリアルな物件事例集</span>
+                <span>約5分でわかる！「自動化ビジネス構築のすべて」解説漫画動画</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#06C755] shrink-0" />
-                <span>初期費用＆月間収支が一目でわかる自動計算シート</span>
+                <span>半年で月利10万〜開業4ヶ月で月利20万円を達成した受講生対談事例</span>
               </li>
               <li className="flex items-center gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#06C755] shrink-0" />
-                <span>ご希望の方には「個別ロードマップ相談」や「丸投げ構築代行」のご案内も！</span>
+                <span>現役8店舗オーナー「さんご」による無料個別相談（プラン最終確認）案内</span>
               </li>
             </ul>
           </div>
 
           {/* メインCTAボタン */}
-          <button
-            type="button"
-            onClick={() => setShowLineModal(true)}
+          <a
+            href={OFFICIAL_LINE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full py-4 px-5 rounded-2xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-base sm:text-lg shadow-[0_8px_25px_rgba(6,199,85,0.5)] flex items-center justify-center gap-2.5 transition transform active:scale-95 border border-white/20 animate-bounce"
             style={{ animationDuration: '2.4s' }}
           >
             <MessageCircle className="w-6 h-6 fill-current shrink-0" />
             <span>公式LINEに登録して結果の続きを見る</span>
             <ChevronRight className="w-5 h-5 shrink-0" />
-          </button>
+          </a>
 
           <p className="text-center text-[11px] text-slate-400">
-            ※ワンタップで友だち追加完了・いつでもブロック可能です
+            ※ワンタップで友だち追加完了・あなたに最適なプラン診断や個別相談もLINEから受けられます
           </p>
         </div>
       </motion.div>
@@ -421,10 +490,10 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <div className="max-w-md mx-auto flex items-center justify-between gap-3">
           <div className="min-w-0">
             <span className="text-[10px] font-bold text-[#4ade80] block">
-              ＼ あなたのタイプ専用の物件探しのコツ＆事例 ／
+              ＼ 物件探しのコツ＆自動化事例を無料配布 ／
             </span>
             <span className="text-xs font-black text-white truncate block">
-              公式LINEで無料プレゼント中！
+              推奨：{primary.recommendedCourse.name}
             </span>
           </div>
           <button
@@ -464,17 +533,17 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 {primary.title} のあなたへ専用ロードマップを送付します！
               </h3>
               <p className="text-xs text-slate-300 leading-relaxed">
-                公式LINEを追加後、自動であなたのタイプに合った
-                <strong className="text-amber-300">「具体的な物件探しのコツ・成功事例・非公開物件や構築代行のご案内」</strong>
-                が届きます。
+                公式LINEを追加後、あなたのタイプに合った
+                <strong className="text-amber-300">「具体的な物件探しのコツ・成功事例・約5分の解説漫画動画」</strong>
+                や、推奨プラン（{primary.recommendedCourse.name}）の個別相談案内をお届けします。
               </p>
             </div>
 
             <div className="bg-slate-950 rounded-2xl p-3.5 border border-slate-800 text-xs space-y-1.5">
-              <div className="text-slate-400 font-bold">【受け取れるシークレット特典】</div>
+              <div className="text-slate-400 font-bold">【公式LINEで受け取れる内容】</div>
               <div className="text-emerald-300 font-bold">・{primary.lineBenefitHighlight}</div>
-              <div className="text-slate-300">・タイプ別の初期費用シミュレーション表</div>
-              <div className="text-slate-300">・無料個別相談／丸投げ構築プラン優先案内</div>
+              <div className="text-slate-300">・漫画でわかる！自動化ビジネス構築のすべて</div>
+              <div className="text-slate-300">・現役オーナー「さんご」との無料個別相談（最終確認）</div>
             </div>
 
             <a
@@ -487,10 +556,6 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
               <span>LINEアプリを開いて特典を受け取る</span>
               <ExternalLink className="w-4 h-4" />
             </a>
-
-            <p className="text-[10px] text-slate-500 text-center">
-              ※本番公開時は `src/components/ResultScreen.tsx` 内の `OFFICIAL_LINE_URL` をご自身の公式LINE URLに設定してください。
-            </p>
           </motion.div>
         </div>
       )}
