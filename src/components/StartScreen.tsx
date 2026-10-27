@@ -10,7 +10,7 @@ import {
   ChevronRight,
   Layers,
 } from 'lucide-react';
-import { PERSONA_TYPES } from '../data/diagnosisData';
+import { PERSONA_TYPES, QUESTIONS } from '../data/diagnosisData';
 import { PersonaType } from '../types/diagnosis';
 
 interface StartScreenProps {
@@ -48,7 +48,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
         <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-sm">
           「興味はあるけど、自分にはどんなやり方が合ってる？」
           <br />
-          直感スワイプで10問に答えるだけで、あなたに最適な開業スタイルと成功戦略がわかります！
+          直感スワイプで{QUESTIONS.length}問に答えるだけで、あなたに最適な開業スタイルと成功戦略がわかります！
         </p>
       </motion.div>
 
@@ -98,7 +98,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
             <div className="bg-slate-950/60 rounded-xl py-2 px-1 border border-slate-800">
               <Clock className="w-4 h-4 text-amber-400 mx-auto mb-1" />
               <div className="text-[11px] font-bold text-white">所要時間60秒</div>
-              <div className="text-[10px] text-slate-400">全10問</div>
+              <div className="text-[10px] text-slate-400">全{QUESTIONS.length}問</div>
             </div>
             <div className="bg-slate-950/60 rounded-xl py-2 px-1 border border-slate-800">
               <Smartphone className="w-4 h-4 text-pink-400 mx-auto mb-1" />

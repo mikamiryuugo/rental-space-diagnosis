@@ -13,6 +13,7 @@ import {
   HeartHandshake,
   Compass,
   Lightbulb,
+  MapPin,
   HelpCircle,
 } from 'lucide-react';
 
@@ -49,6 +50,8 @@ export const DynamicIcon: React.FC<DynamicIconProps> = ({ name, className = 'w-6
       return <Compass className={className} />;
     case 'Lightbulb':
       return <Lightbulb className={className} />;
+    case 'MapPin':
+      return <MapPin className={className} />;
     default:
       return <HelpCircle className={className} />;
   }
