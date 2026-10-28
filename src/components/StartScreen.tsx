@@ -77,7 +77,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
               { label: '① 初期予算感', sub: '50万〜200万円+' },
               { label: '② 設営耐性', sub: 'パーティ等OK vs 楽な用途' },
               { label: '③ エリアこだわり', sub: '出したい場所 vs どこでもOK' },
-              { label: '④ 物件探し耐性', sub: '内見好き vs めんどくさい' },
+              { label: '④ 物件探し耐性', sub: '物件探し楽しい vs めんどくさい' },
             ].map((item, idx) => (
               <div
                 key={idx}

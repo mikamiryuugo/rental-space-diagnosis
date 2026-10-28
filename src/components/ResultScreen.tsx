@@ -84,8 +84,8 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       label: '4. 物件探し耐性',
       value: score.search,
       leftText: '物件探しはめんどくさい',
-      rightText: '物件探し好き・内見好き',
-      badge: score.search >= 50 ? '物件探し・内見好き' : '物件探しはめんどくさい',
+      rightText: '物件探し楽しい',
+      badge: score.search >= 50 ? '物件探し楽しい' : '物件探しはめんどくさい',
       color: 'from-sky-400 to-indigo-500',
     },
     {
