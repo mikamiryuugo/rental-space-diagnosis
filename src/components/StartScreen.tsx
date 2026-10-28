@@ -75,9 +75,9 @@ export const StartScreen: React.FC<StartScreenProps> = ({
           <div className="grid grid-cols-2 gap-2 text-xs">
             {[
               { label: '① 初期予算感', sub: '50万〜200万円+' },
-              { label: '② 設営耐性', sub: 'パーティ等OK vs 楽な用途' },
-              { label: '③ エリアこだわり', sub: '出したい場所 vs どこでもOK' },
-              { label: '④ 物件探し耐性', sub: '物件探し楽しい vs めんどくさい' },
+              { label: '② 設営耐性', sub: '作業OK vs 手間なし重視' },
+              { label: '③ エリア', sub: 'こだわりあり vs どこでもOK' },
+              { label: '④ 物件探し耐性', sub: 'リサーチ好き vs めんどくさい' },
             ].map((item, idx) => (
               <div
                 key={idx}
@@ -88,8 +88,8 @@ export const StartScreen: React.FC<StartScreenProps> = ({
               </div>
             ))}
             <div className="col-span-2 bg-slate-800/80 border border-slate-700/60 rounded-xl p-2.5 flex items-center justify-between">
-              <span className="font-bold text-indigo-300">⑤ リスク・マインド</span>
-              <span className="text-[11px] text-slate-400">手堅く堅実 vs 大箱ハイリターン</span>
+              <span className="font-bold text-indigo-300">⑤ リスク許容度</span>
+              <span className="text-[11px] text-slate-400">手堅く堅実 vs 大きく収益狙い</span>
             </div>
           </div>
 
