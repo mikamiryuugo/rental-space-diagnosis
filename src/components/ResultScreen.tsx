@@ -57,7 +57,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
 
   const axes = [
     {
-      label: '1. 予算・投資スケール',
+      label: '1. 初期予算感',
       value: score.budget,
       leftText: '30万〜50万円少額派',
       rightText: '150万〜200万+本格派',
@@ -65,12 +65,12 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       color: 'from-amber-400 to-orange-500',
     },
     {
-      label: '2. 設営耐性',
-      value: score.diy,
-      leftText: '手間なし重視',
-      rightText: '設営・作業OK',
-      badge: score.diy >= 50 ? '設営・作業OK' : '手間なし重視',
-      color: 'from-emerald-400 to-teal-500',
+      label: '2. 物件探し耐性',
+      value: score.search,
+      leftText: 'めんどくさい',
+      rightText: 'リサーチ好き',
+      badge: score.search >= 50 ? 'リサーチ好き' : 'めんどくさい',
+      color: 'from-sky-400 to-indigo-500',
     },
     {
       label: '3. エリア',
@@ -81,20 +81,20 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       color: 'from-pink-400 to-purple-500',
     },
     {
-      label: '4. 物件探し耐性',
-      value: score.search,
-      leftText: 'めんどくさい',
-      rightText: 'リサーチ好き',
-      badge: score.search >= 50 ? 'リサーチ好き' : 'めんどくさい',
-      color: 'from-sky-400 to-indigo-500',
-    },
-    {
-      label: '5. リスク許容度',
+      label: '4. リスク許容度',
       value: score.mindset,
       leftText: '手堅く堅実',
       rightText: '大きく収益狙い',
       badge: score.mindset >= 55 ? '大きく収益狙い' : '手堅く堅実',
       color: 'from-rose-400 to-red-500',
+    },
+    {
+      label: '5. 設営耐性',
+      value: score.diy,
+      leftText: '手間なし重視',
+      rightText: '設営・作業OK',
+      badge: score.diy >= 50 ? '設営・作業OK' : '手間なし重視',
+      color: 'from-emerald-400 to-teal-500',
     },
   ];
 

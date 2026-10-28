@@ -26,10 +26,10 @@ export const StartScreen: React.FC<StartScreenProps> = ({
 
   const evaluationAxes = [
     { num: '①', label: '初期予算感', sub: '50万〜200万円+' },
-    { num: '②', label: '設営耐性', sub: '作業OK vs 手間なし重視' },
+    { num: '②', label: '物件探し耐性', sub: 'リサーチ好き vs めんどくさい' },
     { num: '③', label: 'エリア', sub: 'こだわりあり vs どこでもOK' },
-    { num: '④', label: '物件探し耐性', sub: 'リサーチ好き vs めんどくさい' },
-    { num: '⑤', label: 'リスク許容度', sub: '手堅く堅実 vs 大きく収益狙い' },
+    { num: '④', label: 'リスク許容度', sub: '手堅く堅実 vs 大きく収益狙い' },
+    { num: '⑤', label: '設営耐性', sub: '作業OK vs 手間なし重視' },
   ];
 
   return (
