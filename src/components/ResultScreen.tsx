@@ -67,17 +67,17 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     {
       label: '2. 設営耐性',
       value: score.diy,
-      leftText: '面倒（ダンス・会議室向き）',
-      rightText: '耐性あり（パーティ・サロンもOK）',
-      badge: score.diy >= 50 ? 'パーティ・サロン等の設営もOK' : 'ダンス・会議室等のシンプル設営向き',
+      leftText: '面倒（ダンス・会議室）',
+      rightText: '耐性あり（パーティ・サロンOK）',
+      badge: score.diy >= 50 ? 'パーティ・サロンもOK' : 'ダンス・会議室向き',
       color: 'from-emerald-400 to-teal-500',
     },
     {
-      label: '3. エリアのこだわり',
+      label: '3. エリアこだわり',
       value: score.attachment,
-      leftText: '事業と割り切り遠隔・どこでもOK',
-      rightText: '「ここに出したい」こだわり場所あり',
-      badge: score.attachment >= 50 ? 'こだわりエリア重視' : '遠隔・どこでもOK（事業割り切り）',
+      leftText: '遠隔・どこでもOK',
+      rightText: '出したい場所がある',
+      badge: score.attachment >= 50 ? 'こだわり場所あり' : 'どこでもOK（事業割り切り）',
       color: 'from-pink-400 to-purple-500',
     },
     {
@@ -85,7 +85,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       value: score.search,
       leftText: '物件探しはめんどくさい',
       rightText: '物件探し好き・内見好き',
-      badge: score.search >= 50 ? '物件探し好き・内見好き' : '物件探しはめんどくさい（代行推奨）',
+      badge: score.search >= 50 ? '物件探し・内見好き' : '物件探しはめんどくさい',
       color: 'from-sky-400 to-indigo-500',
     },
     {
