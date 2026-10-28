@@ -148,21 +148,23 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           </p>
 
           {/* スペック3点バー */}
-          <div className="grid grid-cols-2 gap-2 pt-1 text-xs">
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
-              <span className="text-white/70 block text-[10px]">自己資金目安（実費）</span>
-              <span className="font-black text-sm text-amber-300">{primary.budgetRange}</span>
+          <div className="grid grid-cols-2 gap-2.5 pt-1 text-xs">
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/15">
+              <span className="text-white/80 block text-xs mb-0.5">自己資金目安（実費）</span>
+              <span className="font-black text-base text-amber-300">{primary.budgetRange}</span>
             </div>
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/10">
-              <span className="text-white/70 block text-[10px]">構築・運営難易度</span>
-              <span className="font-black text-sm text-white">{primary.difficulty}</span>
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/15">
+              <span className="text-white/80 block text-xs mb-0.5">構築・運営難易度</span>
+              <span className="font-black text-sm sm:text-base text-white">{primary.difficulty}</span>
             </div>
-            <div className="col-span-2 bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/10 flex items-center justify-between">
-              <span className="text-white/75 text-[11px] flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5 text-emerald-300" />
+            <div className="col-span-2 bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/15 flex items-center justify-between gap-2">
+              <span className="text-white/90 text-xs font-bold flex items-center gap-1.5 shrink-0">
+                <TrendingUp className="w-4 h-4 text-emerald-300" />
                 目標リターン目安
               </span>
-              <span className="font-black text-xs text-emerald-300">{primary.expectedReturn}</span>
+              <span className="font-black text-xs sm:text-sm text-emerald-300 text-right">
+                {primary.expectedReturn}
+              </span>
             </div>
           </div>
         </div>
@@ -172,18 +174,18 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
         <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
           <Sparkles className="w-5 h-5 text-indigo-400" />
-          <h2 className="text-base font-black text-white">このタイプの特徴と強み・注意点</h2>
+          <h2 className="text-base sm:text-lg font-black text-white">このタイプの特徴と強み・注意点</h2>
         </div>
 
-        <p className="text-sm text-slate-200 leading-relaxed">{primary.description}</p>
+        <p className="text-sm sm:text-base text-slate-100 leading-relaxed">{primary.description}</p>
 
         {/* 強み */}
-        <div className="bg-emerald-950/30 border border-emerald-500/25 rounded-2xl p-4 space-y-2.5">
-          <h3 className="text-xs font-black text-emerald-300 flex items-center gap-1.5">
+        <div className="bg-emerald-950/35 border border-emerald-500/30 rounded-2xl p-4 space-y-2.5">
+          <h3 className="text-sm font-black text-emerald-300 flex items-center gap-1.5">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>あなたの強み・勝ちパターン</span>
           </h3>
-          <ul className="space-y-2 text-xs text-slate-200 leading-relaxed">
+          <ul className="space-y-2 text-xs sm:text-sm text-slate-100 leading-relaxed">
             {primary.strengths.map((str, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-emerald-400 font-bold mt-0.5">•</span>
@@ -194,12 +196,12 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
 
         {/* 陥りがちな注意点（リアルなハードル） */}
-        <div className="bg-rose-950/30 border border-rose-500/25 rounded-2xl p-4 space-y-2.5">
-          <h3 className="text-xs font-black text-rose-300 flex items-center gap-1.5">
+        <div className="bg-rose-950/35 border border-rose-500/30 rounded-2xl p-4 space-y-2.5">
+          <h3 className="text-sm font-black text-rose-300 flex items-center gap-1.5">
             <AlertTriangle className="w-4 h-4 text-rose-400" />
             <span>知っておくべきリアルなハードル・注意点</span>
           </h3>
-          <ul className="space-y-2 text-xs text-slate-200 leading-relaxed">
+          <ul className="space-y-2 text-xs sm:text-sm text-slate-100 leading-relaxed">
             {primary.weaknesses.map((wk, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-rose-400 font-bold mt-0.5">•</span>
@@ -214,36 +216,36 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
         <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
           <Wrench className="w-5 h-5 text-amber-400" />
-          <h2 className="text-base font-black text-white">あなた専用の「勝てる開業戦略」3ステップ</h2>
+          <h2 className="text-base sm:text-lg font-black text-white">あなた専用の「勝てる開業戦略」3ステップ</h2>
         </div>
 
         <div className="space-y-3">
-          <div className="bg-slate-800/70 rounded-2xl p-4 border border-slate-700/70 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-black text-indigo-300">
+          <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-sm font-black text-indigo-300">
               <MapPin className="w-4 h-4 text-indigo-400" />
               <span>STEP 1：狙うべきエリアと物件選定</span>
             </div>
-            <p className="text-xs text-slate-200 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed">
               {primary.strategy.areaAndProperty}
             </p>
           </div>
 
-          <div className="bg-slate-800/70 rounded-2xl p-4 border border-slate-700/70 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-black text-pink-300">
+          <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-sm font-black text-pink-300">
               <Sparkles className="w-4 h-4 text-pink-400" />
               <span>STEP 2：コンセプト設計＆自社集客の構築</span>
             </div>
-            <p className="text-xs text-slate-200 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed">
               {primary.strategy.conceptAndSetup}
             </p>
           </div>
 
-          <div className="bg-slate-800/70 rounded-2xl p-4 border border-slate-700/70 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-xs font-black text-emerald-300">
+          <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 space-y-1.5">
+            <div className="flex items-center gap-1.5 text-sm font-black text-emerald-300">
               <Settings className="w-4 h-4 text-emerald-400" />
               <span>STEP 3：完全自動化と清掃外注マニュアル化</span>
             </div>
-            <p className="text-xs text-slate-200 leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed">
               {primary.strategy.operationStyle}
             </p>
           </div>
@@ -344,13 +346,13 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         <div className="space-y-4">
           {axes.map((axis, idx) => (
             <div key={idx} className="space-y-1.5">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-slate-200">{axis.label}</span>
-                <span className="px-2 py-0.5 rounded-md bg-slate-800 text-indigo-300 font-bold text-[10px] border border-slate-700">
+              <div className="flex items-center justify-between text-xs sm:text-sm">
+                <span className="font-black text-white">{axis.label}</span>
+                <span className="px-2.5 py-0.5 rounded-lg bg-slate-800 text-amber-300 font-bold text-xs border border-slate-700">
                   {axis.badge}
                 </span>
               </div>
-              <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700/60">
+              <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
                 <motion.div
                   className={`h-full rounded-full bg-gradient-to-r ${axis.color}`}
                   initial={{ width: 0 }}
@@ -358,7 +360,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                   transition={{ duration: 0.6, delay: idx * 0.08 }}
                 />
               </div>
-              <div className="flex justify-between text-[10px] text-slate-400">
+              <div className="flex justify-between text-xs font-medium text-slate-300">
                 <span>{axis.leftText}</span>
                 <span>{axis.rightText}</span>
               </div>
