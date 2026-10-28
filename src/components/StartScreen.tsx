@@ -34,7 +34,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
       >
         <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 border border-indigo-400/40 text-indigo-300 text-xs font-bold shadow-sm">
           <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          <span>現役8店舗手放し運営オーナー監修・開業スタイル診断</span>
+          <span>開業スタイル診断</span>
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug">
@@ -72,25 +72,37 @@ export const StartScreen: React.FC<StartScreenProps> = ({
           </div>
 
           {/* 5軸のチップ */}
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="grid grid-cols-1 gap-2 text-xs">
             {[
-              { label: '① 初期予算感', sub: '50万〜200万円+' },
-              { label: '② 作業・DIY耐性', sub: '自力設営 vs 丸投げ' },
-              { label: '③ エリア・空間愛着', sub: '秘密基地 vs 完全遠隔' },
-              { label: '④ 物件探し耐性', sub: '内見好き vs 時短重視' },
+              {
+                label: '① 初期予算感',
+                sub: '50万円前後 〜 200万円以上',
+              },
+              {
+                label: '② 設営耐性',
+                sub: '耐性あり（パーティ・サロンもOK） vs 面倒ならダンス・会議室（※用途は物件に合わせるため、固定化すると決まるまで時間がかかります）',
+              },
+              {
+                label: '③ エリアのこだわり',
+                sub: '「ここに出したい」場所がある vs 事業と割り切って遠隔・どこでもOK',
+              },
+              {
+                label: '④ 物件探し耐性',
+                sub: '物件探し好き・内見好き vs 物件探しはめんどくさい',
+              },
+              {
+                label: '⑤ リスク・オーナーマインド',
+                sub: '手堅く堅実スタート vs 大箱ハイリターン狙い',
+              },
             ].map((item, idx) => (
               <div
                 key={idx}
                 className="bg-slate-800/80 border border-slate-700/60 rounded-xl p-2.5 flex flex-col"
               >
                 <span className="font-bold text-indigo-300">{item.label}</span>
-                <span className="text-[11px] text-slate-400 mt-0.5">{item.sub}</span>
+                <span className="text-[11px] text-slate-300 mt-0.5 leading-relaxed">{item.sub}</span>
               </div>
             ))}
-            <div className="col-span-2 bg-slate-800/80 border border-slate-700/60 rounded-xl p-2.5 flex items-center justify-between">
-              <span className="font-bold text-indigo-300">⑤ リスク・オーナーマインド</span>
-              <span className="text-[11px] text-slate-400">手堅く堅実 vs 大箱ハイリターン</span>
-            </div>
           </div>
 
           {/* 特徴3点 */}
