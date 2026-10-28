@@ -33,7 +33,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
   ];
 
   return (
-    <div className="w-full max-w-md mx-auto min-h-dvh flex flex-col justify-center gap-6 px-4 py-7 text-white">
+    <div className="w-full max-w-lg mx-auto min-h-dvh flex flex-col justify-center gap-6 px-4 py-7 text-white">
       {/* トップ見出しエリア */}
       <motion.div
         initial={{ opacity: 0, y: -12 }}
@@ -45,7 +45,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
           <span>開業スタイル診断</span>
         </div>
 
-        <h1 className="text-[28px] sm:text-3xl font-black tracking-tight leading-snug">
+        <h1 className="text-[26px] sm:text-3xl font-black tracking-tight leading-snug">
           あなたの予算×性格でわかる！
           <span className="block mt-1 bg-gradient-to-r from-amber-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent">
             「手放しで勝てるレンスペ開業」
@@ -53,10 +53,10 @@ export const StartScreen: React.FC<StartScreenProps> = ({
           9タイプ適性診断
         </h1>
 
-        <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
+        <p className="text-sm sm:text-[15px] text-slate-200 leading-relaxed">
           直感スワイプで<strong className="text-amber-300 font-black">{QUESTIONS.length}問</strong>に答えるだけ！
           <br />
-          あなたに最適な開業スタイルと自動化の戦略がわかります。
+          あなたに最適な開業スタイルと成功戦略がわかります。
         </p>
       </motion.div>
 
@@ -68,31 +68,31 @@ export const StartScreen: React.FC<StartScreenProps> = ({
         className="relative"
       >
         <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-lg opacity-40" />
-        <div className="relative bg-slate-900/95 border border-slate-700/80 rounded-3xl p-5 space-y-4 shadow-2xl">
+        <div className="relative bg-slate-900/95 border border-slate-700/80 rounded-3xl p-4 sm:p-6 space-y-4 shadow-2xl">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
               <span className="text-sm font-black text-white">5つの評価軸で精密スコアリング</span>
             </div>
-            <span className="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-3 py-1 rounded-full border border-indigo-500/40">
+            <span className="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-3 py-1 rounded-full border border-indigo-500/40 shrink-0">
               全9タイプ判定
             </span>
           </div>
 
-          {/* 5軸リスト（1行ずつ大きくクッキリ表示して改行崩れを完全防止） */}
+          {/* 5軸リスト（whitespace-nowrapで1文字落ちの謎改行を完全防止） */}
           <div className="space-y-2.5">
             {evaluationAxes.map((item, idx) => (
               <div
                 key={idx}
-                className="bg-slate-800/90 border border-slate-700/80 rounded-2xl px-4 py-3 flex items-center justify-between gap-2"
+                className="bg-slate-800/90 border border-slate-700/80 rounded-2xl px-3.5 sm:px-4 py-3 flex items-center justify-between gap-2"
               >
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 whitespace-nowrap">
                   <span className="text-sm font-black text-indigo-400">{item.num}</span>
                   <span className="text-sm sm:text-base font-black text-white">
                     {item.label}
                   </span>
                 </div>
-                <span className="text-xs sm:text-sm font-bold text-amber-200/95 bg-slate-950/70 px-3 py-1 rounded-xl border border-slate-700/80 text-right">
+                <span className="text-xs sm:text-[13px] font-bold text-amber-200/95 bg-slate-950/80 px-2.5 sm:px-3 py-1 rounded-xl border border-slate-700/80 whitespace-nowrap shrink-0">
                   {item.sub}
                 </span>
               </div>
