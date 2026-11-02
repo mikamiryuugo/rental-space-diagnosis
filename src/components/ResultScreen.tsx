@@ -1,27 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect } from 'react';
 import {
   CheckCircle2,
   AlertTriangle,
   Sparkles,
-  MapPin,
-  Wrench,
-  Settings,
   Gift,
   MessageCircle,
   RotateCcw,
   ChevronRight,
   Award,
   TrendingUp,
-  Layers,
-  ExternalLink,
   Crown,
-  Check,
-  X,
-  ClipboardList,
 } from 'lucide-react';
 import { PersonaType, ScoreProfile } from '../types/diagnosis';
-import { PERSONA_TYPES, QUESTIONS } from '../data/diagnosisData';
 import { DynamicIcon } from './DynamicIcon';
 import { AnswerRecord } from '../App';
 
@@ -35,104 +25,25 @@ interface ResultScreenProps {
 }
 
 /**
- * 公式LINEの登録URL（LPの公式LINEリンク https://lin.ee/nkBUi41 を設定済み）
+ * 公式LINEの登録URL
  */
 const OFFICIAL_LINE_URL = 'https://lin.ee/nkBUi41';
 
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   primary,
-  secondary,
-  score,
-  history,
   onRestart,
-  onSwitchPersona,
 }) => {
-  const [showLineModal, setShowLineModal] = useState(false);
-  const [showAnswerHistory, setShowAnswerHistory] = useState(false);
-
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   }, [primary.id]);
 
-  // 予算スコアから4段階の目安ラベルを算出
-  const getBudgetLabel = (val: number) => {
-    if (val >= 75) return '150万〜200万円〜（大型・丸投げOK）';
-    if (val >= 55) return '100万〜150万円（中規模・物件サポート）';
-    if (val >= 35) return '50万〜100万円（標準スタート）';
-    return '50万円前後（少額スタート）';
-  };
-
-  // ユーザーの5軸スコア（①初期予算感 ②物件探し耐性 ③エリア ④リスク許容度 ⑤設営耐性）から個別診断コメントを生成
-  const personalSummaryPoints = [
-    score.budget >= 75
-      ? '① 初期予算感：150万〜200万円以上のゆとりある資金力を活かし、大型案件や完全丸投げでのスピード立ち上げが可能です。'
-      : score.budget >= 50
-      ? '① 初期予算感：100万円前後のバランスが良い予算感で、優良物件の確保から自社集客の構築まで手堅く進められます。'
-      : '① 初期予算感：50万円前後の少額スタート志向。無駄な初期コストを削り、リスクを最小限に抑えて始める戦略が合っています。',
-    score.search >= 50
-      ? '② 物件探し耐性：ネットでの物件リサーチが苦にならない強みがあります。正しい業者開拓ノウハウを学べば自力でお宝物件を発掘できます。'
-      : '② 物件探し耐性：物件探しに時間をかけるより、プロの『物件探しサポート』や『丸投げ』を活用してショートカットするのが圧倒的に確実です。',
-    score.attachment >= 50
-      ? '③ エリア：「ここに出したい」というこだわり派。郊外や地元で出す場合は、地域需要が底堅い『レンタルスタジオ』等に絞るのが鉄則です。'
-      : '③ エリア：事業と割り切って「遠隔・どこでもOK」な合理派。全国の高利回りエリアをターゲットに手放し資産を作れます。',
-    score.mindset >= 55
-      ? '④ リスク許容度：オーナーとしての自責マインドが高く、1店舗で月利15万〜20万円以上や複数店舗展開・M&A売却も十分に狙えます。'
-      : '④ リスク許容度：失敗を避けて手堅く進めたい慎重派。まずは『開業保証』をつけて月3万〜10万円の負けない1店舗目を着実に作りましょう。',
-    score.diy >= 50
-      ? '⑤ 設営耐性：家具の組み立てや設営作業もOKなタイプ。自力で動ける分、初期費用を大きく圧縮して高利回りを実現できます。'
-      : '⑤ 設営耐性：設営作業はなるべく省きたいタイプ。設備がシンプルな『ダンススタジオ・会議室』を選ぶか、設営までプロに任せるのが正解です。',
-  ];
-
-  const axes = [
-    {
-      label: '1. 初期予算感',
-      value: score.budget,
-      leftText: '30万〜50万円少額派',
-      rightText: '150万〜200万+本格派',
-      badge: getBudgetLabel(score.budget),
-      color: 'from-amber-400 to-orange-500',
-    },
-    {
-      label: '2. 物件探し耐性',
-      value: score.search,
-      leftText: 'めんどくさい',
-      rightText: 'リサーチ好き',
-      badge: score.search >= 50 ? 'リサーチ好き' : 'めんどくさい',
-      color: 'from-sky-400 to-indigo-500',
-    },
-    {
-      label: '3. エリア',
-      value: score.attachment,
-      leftText: 'どこでもOK',
-      rightText: 'こだわりあり',
-      badge: score.attachment >= 50 ? 'こだわりあり' : 'どこでもOK',
-      color: 'from-pink-400 to-purple-500',
-    },
-    {
-      label: '4. リスク許容度',
-      value: score.mindset,
-      leftText: '手堅く堅実',
-      rightText: '大きく収益狙い',
-      badge: score.mindset >= 55 ? '大きく収益狙い' : '手堅く堅実',
-      color: 'from-rose-400 to-red-500',
-    },
-    {
-      label: '5. 設営耐性',
-      value: score.diy,
-      leftText: '手間なし重視',
-      rightText: '設営・作業OK',
-      badge: score.diy >= 50 ? '設営・作業OK' : '手間なし重視',
-      color: 'from-emerald-400 to-teal-500',
-    },
-  ];
-
   return (
-    <div className="w-full max-w-lg mx-auto min-h-dvh pb-28 px-4 pt-5 text-white space-y-6">
+    <div className="w-full max-w-lg mx-auto min-h-dvh pb-12 px-4 pt-5 text-white space-y-5">
       {/* ヘッダーラベル */}
       <div className="flex items-center justify-between">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">
           <Award className="w-3.5 h-3.5 text-amber-400" />
-          <span>あなたの診断結果が確定しました！</span>
+          <span>診断結果</span>
         </div>
         <button
           type="button"
@@ -140,524 +51,171 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-white transition"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>もう一度診断</span>
+          <span>もう一度診断する</span>
         </button>
       </div>
 
-      {/* メイン結果カード（ペルソナヒーロー） */}
+      {/* ① メイン結果カード（ペルソナヒーロー） */}
       <div
-        className={`relative rounded-3xl p-6 bg-gradient-to-br ${primary.gradient} shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20`}
+        className={`relative rounded-3xl p-5 sm:p-6 bg-gradient-to-br ${primary.gradient} shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20`}
       >
-        <div className="absolute -right-10 -top-10 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="relative z-10 space-y-4">
+        <div className="relative z-10 space-y-3.5">
           <div className="flex items-center justify-between">
             <span className="px-3 py-1 rounded-full text-xs font-black bg-black/30 backdrop-blur-md text-white border border-white/20">
-              {primary.code} / {primary.badgeText}
+              {primary.badgeText}
             </span>
-            <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
-              <DynamicIcon name={primary.iconName} className="w-7 h-7" />
+            <div className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+              <DynamicIcon name={primary.iconName} className="w-6 h-6" />
             </div>
           </div>
 
           <div>
-            <p className="text-xs font-bold text-white/85 mb-1">
-              あなたに最もおすすめの開業スタイルは…
+            <p className="text-xs font-bold text-white/85 mb-0.5">
+              あなたに最適な開業スタイルは…
             </p>
-            <h1 className="text-2xl sm:text-[26px] font-black text-white leading-tight drop-shadow-sm">
+            <h1 className="text-xl sm:text-2xl font-black text-white leading-tight drop-shadow-sm">
               {primary.title}
             </h1>
           </div>
 
-          <p className="text-sm font-bold text-white/95 bg-black/25 backdrop-blur-sm rounded-2xl p-3.5 border border-white/15 leading-relaxed">
+          <p className="text-xs sm:text-sm font-bold text-white/95 bg-black/25 backdrop-blur-sm rounded-2xl p-3 border border-white/15 leading-relaxed">
             {primary.catchphrase}
           </p>
 
-          {/* スペック3点バー */}
-          <div className="grid grid-cols-2 gap-2.5 pt-1 text-xs">
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/15">
-              <span className="text-white/80 block text-xs mb-0.5">自己資金目安（実費）</span>
-              <span className="font-black text-base text-amber-300">{primary.budgetRange}</span>
+          {/* スペックバー */}
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/15">
+              <span className="text-white/80 block text-[11px]">自己資金目安（実費）</span>
+              <span className="font-black text-sm sm:text-base text-amber-300">
+                {primary.budgetRange}
+              </span>
             </div>
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/15">
-              <span className="text-white/80 block text-xs mb-0.5">構築・運営難易度</span>
-              <span className="font-black text-sm sm:text-base text-white">{primary.difficulty}</span>
-            </div>
-            <div className="col-span-2 bg-black/30 backdrop-blur-sm rounded-xl p-3 border border-white/15 flex items-center justify-between gap-2">
-              <span className="text-white/90 text-xs font-bold flex items-center gap-1.5 shrink-0">
-                <TrendingUp className="w-4 h-4 text-emerald-300" />
+            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-2.5 border border-white/15">
+              <span className="text-white/80 block text-[11px] flex items-center gap-1">
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-300" />
                 目標リターン目安
               </span>
-              <span className="font-black text-xs sm:text-sm text-emerald-300 text-right">
-                {primary.expectedReturn}
+              <span className="font-black text-xs sm:text-sm text-emerald-300">
+                {primary.expectedReturn.replace(' / 1店舗', '')}
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* タイプの特徴・詳細解説 */}
-      <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-        <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-          <Sparkles className="w-5 h-5 text-indigo-400" />
-          <h2 className="text-base sm:text-lg font-black text-white">このタイプの特徴と強み・注意点</h2>
+      {/* ② タイプの特徴・強み・注意点（コンパクトまとめ） */}
+      <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-3.5 shadow-xl">
+        <div className="flex items-center gap-2 border-b border-slate-800 pb-2.5">
+          <Sparkles className="w-4 h-4 text-indigo-400" />
+          <h2 className="text-sm sm:text-base font-black text-white">
+            あなたの特徴と勝ちパターン
+          </h2>
         </div>
 
-        <p className="text-sm sm:text-base text-slate-100 leading-relaxed">{primary.description}</p>
+        <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+          {primary.description}
+        </p>
 
         {/* 強み */}
-        <div className="bg-emerald-950/35 border border-emerald-500/30 rounded-2xl p-4 space-y-2.5">
-          <h3 className="text-sm font-black text-emerald-300 flex items-center gap-1.5">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>あなたの強み・勝ちパターン</span>
+        <div className="bg-emerald-950/35 border border-emerald-500/30 rounded-2xl p-3.5 space-y-1.5">
+          <h3 className="text-xs sm:text-sm font-black text-emerald-300 flex items-center gap-1.5">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>強み・向いている戦い方</span>
           </h3>
-          <ul className="space-y-2 text-xs sm:text-sm text-slate-100 leading-relaxed">
-            {primary.strengths.map((str, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-emerald-400 font-bold mt-0.5">•</span>
+          <ul className="space-y-1.5 text-xs text-slate-100 leading-relaxed">
+            {primary.strengths.slice(0, 2).map((str, i) => (
+              <li key={i} className="flex items-start gap-1.5">
+                <span className="text-emerald-400 font-bold">•</span>
                 <span>{str}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* 陥りがちな注意点（リアルなハードル） */}
-        <div className="bg-rose-950/35 border border-rose-500/30 rounded-2xl p-4 space-y-2.5">
-          <h3 className="text-sm font-black text-rose-300 flex items-center gap-1.5">
-            <AlertTriangle className="w-4 h-4 text-rose-400" />
-            <span>知っておくべきリアルなハードル・注意点</span>
+        {/* 注意点 */}
+        <div className="bg-rose-950/35 border border-rose-500/30 rounded-2xl p-3.5 space-y-1.5">
+          <h3 className="text-xs sm:text-sm font-black text-rose-300 flex items-center gap-1.5">
+            <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+            <span>気をつけるべきポイント</span>
           </h3>
-          <ul className="space-y-2 text-xs sm:text-sm text-slate-100 leading-relaxed">
-            {primary.weaknesses.map((wk, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <span className="text-rose-400 font-bold mt-0.5">•</span>
-                <span>{wk}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* おすすめの具体的開業戦略 */}
-      <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-        <div className="flex items-center gap-2 border-b border-slate-800 pb-3">
-          <Wrench className="w-5 h-5 text-amber-400" />
-          <h2 className="text-base sm:text-lg font-black text-white">あなた専用の「勝てる開業戦略」3ステップ</h2>
-        </div>
-
-        <div className="space-y-3">
-          <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-sm font-black text-indigo-300">
-              <MapPin className="w-4 h-4 text-indigo-400" />
-              <span>STEP 1：狙うべきエリアと物件選定</span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed">
-              {primary.strategy.areaAndProperty}
-            </p>
-          </div>
-
-          <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-sm font-black text-pink-300">
-              <Sparkles className="w-4 h-4 text-pink-400" />
-              <span>STEP 2：コンセプト設計＆自社集客の構築</span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed">
-              {primary.strategy.conceptAndSetup}
-            </p>
-          </div>
-
-          <div className="bg-slate-800/80 rounded-2xl p-4 border border-slate-700 space-y-1.5">
-            <div className="flex items-center gap-1.5 text-sm font-black text-emerald-300">
-              <Settings className="w-4 h-4 text-emerald-400" />
-              <span>STEP 3：完全自動化と清掃外注マニュアル化</span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-100 leading-relaxed">
-              {primary.strategy.operationStyle}
-            </p>
-          </div>
+          <p className="text-xs text-slate-100 leading-relaxed">
+            • {primary.weaknesses[0]}
+          </p>
         </div>
 
         {/* 相性抜群のスペースジャンル */}
-        <div className="pt-1">
-          <p className="text-xs font-bold text-slate-400 mb-2">
-            ▼ あなたと相性抜群のスペース用途
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {primary.recommendedSpaceTypes.map((tag, i) => (
-              <span
-                key={i}
-                className="px-3 py-1.5 rounded-xl bg-indigo-500/15 border border-indigo-400/30 text-indigo-200 text-xs font-bold"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          {primary.recommendedSpaceTypes.map((tag, i) => (
+            <span
+              key={i}
+              className="px-2.5 py-1 rounded-lg bg-indigo-500/15 border border-indigo-400/30 text-indigo-200 text-xs font-bold"
+            >
+              #{tag}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* あなたに最適な開業伴走サポートプラン（LPの3コースと完全連動） */}
-      <div className="bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-900 border-2 border-amber-500/40 rounded-3xl p-5 space-y-4 shadow-xl">
-        <div className="flex items-center justify-between border-b border-amber-500/20 pb-3">
-          <div className="flex items-center gap-2">
-            <Crown className="w-5 h-5 text-amber-400" />
-            <h2 className="text-base font-black text-white">あなたに最適な伴走サポートプラン</h2>
+      {/* ③ あなたに最適なサポートプラン（LPの3コース連動） */}
+      <div className="bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-900 border border-amber-500/40 rounded-3xl p-4 sm:p-5 space-y-3 shadow-xl">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <Crown className="w-4 h-4 text-amber-400" />
+            <h2 className="text-sm sm:text-base font-black text-white">
+              あなたにおすすめのサポートコース
+            </h2>
           </div>
-          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/20 text-amber-300 border border-amber-400/30">
-            現役8店舗オーナー直伝
+          <span className="px-2 py-0.5 rounded-md bg-amber-500 text-slate-950 font-black text-[11px]">
+            {primary.recommendedCourse.badge}
           </span>
         </div>
 
-        <div className="bg-slate-950/80 border border-amber-500/30 rounded-2xl p-4 space-y-2.5">
-          <div className="flex items-center justify-between gap-2 flex-wrap">
-            <span className="text-xs font-bold text-amber-300">
-              ★ 診断結果に基づく推奨プラン
-            </span>
-            <span className="px-2.5 py-0.5 rounded-md bg-amber-500 text-slate-950 font-black text-[11px]">
-              {primary.recommendedCourse.badge}
-            </span>
-          </div>
-
-          <div className="text-xl font-black text-white">
+        <div className="bg-slate-950/80 border border-amber-500/30 rounded-2xl p-3.5 space-y-2">
+          <div className="text-lg font-black text-amber-300">
             『{primary.recommendedCourse.name}』
           </div>
-
           <p className="text-xs text-slate-200 leading-relaxed">
             {primary.recommendedCourse.reason}
           </p>
-
-          <ul className="space-y-1.5 pt-2 border-t border-slate-800 text-xs text-slate-300">
-            {primary.recommendedCourse.features.map((feat, i) => (
-              <li key={i} className="flex items-start gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                <span>{feat}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* 3コース比較ミニガイド */}
-        <div className="grid grid-cols-3 gap-1.5 text-[10px]">
-          {[
-            { name: '開業保証コース', desc: '教材＋無制限相談＋開業まで保証' },
-            { name: '物件探しサポート', desc: '上記＋プロが物件を探索・提案' },
-            { name: '丸投げコース', desc: '物件探し〜開業準備まで完全代行' },
-          ].map((c, idx) => {
-            const isMatched = primary.recommendedCourse.name.includes(c.name);
-            return (
-              <div
-                key={idx}
-                className={`rounded-xl p-2 border flex flex-col justify-between ${
-                  isMatched
-                    ? 'bg-amber-500/20 border-amber-400 text-white font-bold'
-                    : 'bg-slate-900/60 border-slate-800 text-slate-400'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="truncate font-black">{c.name}</span>
-                </div>
-                <span className="text-[9px] leading-tight opacity-85">{c.desc}</span>
-              </div>
-            );
-          })}
         </div>
       </div>
 
-      {/* 5つの評価軸・スコア分析グラフ＆パーソナライズ総評 */}
-      <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-          <h2 className="text-base sm:text-lg font-black text-white">あなたの5軸パラメータ診断結果</h2>
-          <span className="text-xs font-bold text-indigo-300 bg-indigo-950/70 px-2.5 py-0.5 rounded-full border border-indigo-500/30">
-            回答スコア分析
-          </span>
-        </div>
-
-        {/* 回答から導き出された5軸別の個別フィードバック */}
-        <div className="bg-slate-950/80 border border-indigo-500/30 rounded-2xl p-4 space-y-2">
-          <div className="text-xs sm:text-sm font-black text-indigo-300 mb-1">
-            ▼ あなたの回答から見えた5つの適性診断：
-          </div>
-          <ul className="space-y-2 text-xs sm:text-sm text-slate-200 leading-relaxed">
-            {personalSummaryPoints.map((pt, i) => (
-              <li key={i} className="bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-2">
-                {pt}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="space-y-4">
-          {axes.map((axis, idx) => (
-            <div key={idx} className="space-y-1.5">
-              <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
-                <span className="font-black text-white whitespace-nowrap">{axis.label}</span>
-                <span className="px-2.5 py-0.5 rounded-lg bg-slate-800 text-amber-300 font-bold text-xs border border-slate-700 whitespace-nowrap">
-                  {axis.badge}
-                </span>
-              </div>
-              <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
-                <div
-                  className={`h-full rounded-full bg-gradient-to-r ${axis.color} transition-all duration-500 ease-out`}
-                  style={{ width: `${axis.value}%` }}
-                />
-              </div>
-              <div className="flex justify-between text-xs font-medium text-slate-300">
-                <span>{axis.leftText}</span>
-                <span>{axis.rightText}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* 回答した全11問の振り返り一覧（アコーディオン） */}
-        {history.length > 0 && (
-          <div className="pt-3 border-t border-slate-800">
-            <button
-              type="button"
-              onClick={() => setShowAnswerHistory(!showAnswerHistory)}
-              className="w-full py-2.5 px-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-xs sm:text-sm font-bold text-slate-200 flex items-center justify-between transition"
-            >
-              <span className="flex items-center gap-2">
-                <ClipboardList className="w-4 h-4 text-indigo-400" />
-                <span>あなたの回答内容（全{history.length}問）を振り返る</span>
-              </span>
-              <span className="text-xs text-indigo-300">
-                {showAnswerHistory ? '閉じる ▲' : '一覧を見る ▼'}
-              </span>
-            </button>
-
-            {showAnswerHistory && (
-              <div className="mt-2.5 space-y-2 max-h-72 overflow-y-auto pr-1">
-                {history.map((record, index) => {
-                  const q = QUESTIONS[record.questionIndex];
-                  if (!q) return null;
-                  return (
-                    <div
-                      key={index}
-                      className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-start justify-between gap-3 text-xs"
-                    >
-                      <div className="space-y-1">
-                        <span className="text-[11px] font-bold text-indigo-400 block">
-                          Q{index + 1}. {q.axisLabel}
-                        </span>
-                        <p className="text-slate-200 font-medium leading-snug">{q.question}</p>
-                      </div>
-                      <span
-                        className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-black text-xs ${
-                          record.isYes
-                            ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/40'
-                            : 'bg-rose-950/80 text-rose-300 border border-rose-500/40'
-                        }`}
-                      >
-                        {record.isYes ? (
-                          <>
-                            <Check className="w-3.5 h-3.5" />
-                            <span>はい</span>
-                          </>
-                        ) : (
-                          <>
-                            <X className="w-3.5 h-3.5" />
-                            <span>いいえ</span>
-                          </>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* サブタイプ（第2候補）の提案 */}
-        <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
-          <div className="space-y-0.5">
-            <span className="text-xs text-slate-300 block">
-              僅差でマッチした第2候補のスタイル：
-            </span>
-            <span className="text-xs sm:text-sm font-bold text-indigo-300">{secondary.title}</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => onSwitchPersona(secondary)}
-            className="shrink-0 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700 transition"
-          >
-            詳細を見る
-          </button>
-        </div>
-      </div>
-
-      {/* ================================================================= */}
-      {/* 最終画面（CTA）の要件：公式LINE登録への強力なリード獲得セクション */}
-      {/* ================================================================= */}
-      <div
-        className="relative rounded-3xl p-1 bg-gradient-to-r from-[#06C755] via-emerald-400 to-teal-500 shadow-[0_15px_50px_rgba(6,199,85,0.35)]"
-      >
-        <div className="bg-slate-950 rounded-[22px] p-5 sm:p-6 space-y-4">
+      {/* ④ 公式LINE登録CTA */}
+      <div className="relative rounded-3xl p-1 bg-gradient-to-r from-[#06C755] via-emerald-400 to-teal-500 shadow-[0_12px_40px_rgba(6,199,85,0.3)]">
+        <div className="bg-slate-950 rounded-[22px] p-5 space-y-3.5">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#06C755]/20 border border-[#06C755]/40 text-[#4ade80] text-xs font-black">
-            <Gift className="w-4 h-4" />
+            <Gift className="w-3.5 h-3.5" />
             <span>診断完了者限定・公式LINE無料プレゼント</span>
           </div>
 
-          <h2 className="text-lg sm:text-xl font-black text-white leading-snug">
+          <h2 className="text-base sm:text-lg font-black text-white leading-snug">
             あなたのタイプに合った具体的な物件探しのコツや事例を
             <span className="text-[#4ade80]">LINEで無料プレゼント！</span>
           </h2>
 
-          {/* タイプ専用の特典ハイライトボックス */}
-          <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-4 space-y-2.5">
-            <div className="text-xs font-black text-amber-300 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 shrink-0" />
-              <span>{primary.title} 専用の特典＆ご案内：</span>
+          <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-3.5 text-xs text-slate-200 space-y-1.5">
+            <div className="font-bold text-emerald-300">
+              🎁 {primary.lineBenefitHighlight}
             </div>
-            <p className="text-xs sm:text-sm font-bold text-white bg-emerald-950/50 border border-emerald-500/30 rounded-xl p-3 leading-relaxed">
-              🎁 『{primary.lineBenefitHighlight}』
-            </p>
-            <ul className="space-y-1.5 text-xs text-slate-300 pt-1">
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#06C755] shrink-0" />
-                <span>約5分でわかる！「自動化ビジネス構築のすべて」解説漫画動画</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#06C755] shrink-0" />
-                <span>半年で月利10万〜開業4ヶ月で月利20万円を達成した受講生対談事例</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#06C755] shrink-0" />
-                <span>現役8店舗オーナー「さんご」による無料個別相談（プラン最終確認）案内</span>
-              </li>
-            </ul>
+            <div className="text-slate-300">
+              ・約5分でわかる「自動化ビジネス構築」解説漫画動画＆個別相談案内
+            </div>
           </div>
 
-          {/* メインCTAボタン */}
           <a
             href={OFFICIAL_LINE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full py-4 px-5 rounded-2xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-base sm:text-lg shadow-[0_8px_25px_rgba(6,199,85,0.5)] flex items-center justify-center gap-2.5 transition transform active:scale-95 border border-white/20 animate-bounce"
-            style={{ animationDuration: '2.4s' }}
+            className="w-full py-4 px-5 rounded-2xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-base shadow-[0_8px_25px_rgba(6,199,85,0.45)] flex items-center justify-center gap-2 transition transform active:scale-95 border border-white/20"
           >
-            <MessageCircle className="w-6 h-6 fill-current shrink-0" />
-            <span>公式LINEに登録して結果の続きを見る</span>
+            <MessageCircle className="w-5 h-5 fill-current shrink-0" />
+            <span>公式LINEで結果の続きと特典を受け取る</span>
             <ChevronRight className="w-5 h-5 shrink-0" />
           </a>
-
-          <p className="text-center text-[11px] text-slate-400">
-            ※ワンタップで友だち追加完了・あなたに最適なプラン診断や個別相談もLINEから受けられます
-          </p>
         </div>
       </div>
-
-      {/* 他のタイプも見てみる（全9タイプの切替セレクター） */}
-      <div className="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 space-y-3">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
-          <Layers className="w-4 h-4 text-indigo-400" />
-          <span>他の診断結果パターン（全9タイプ）も比較してみる</span>
-        </div>
-        <div className="grid grid-cols-1 gap-1.5">
-          {PERSONA_TYPES.map((p) => {
-            const isCurrent = p.id === primary.id;
-            return (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => onSwitchPersona(p)}
-                className={`w-full text-left px-3 py-2 rounded-xl text-xs font-bold flex items-center justify-between transition ${
-                  isCurrent
-                    ? 'bg-indigo-600/30 border border-indigo-400/50 text-white'
-                    : 'bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800 text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <span className="truncate">
-                  <span className="font-mono text-[10px] text-indigo-400 mr-1.5">{p.code}</span>
-                  {p.title}
-                </span>
-                {isCurrent ? (
-                  <span className="text-[10px] bg-indigo-500 text-white px-2 py-0.5 rounded-full shrink-0">
-                    表示中
-                  </span>
-                ) : (
-                  <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* 画面下部追従型のフローティングLINE CTAバー（スマホでのCVR最大化） */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-md border-t border-slate-800 p-3">
-        <div className="max-w-md mx-auto flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <span className="text-[10px] font-bold text-[#4ade80] block">
-              ＼ 物件探しのコツ＆自動化事例を無料配布 ／
-            </span>
-            <span className="text-xs font-black text-white truncate block">
-              推奨：{primary.recommendedCourse.name}
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setShowLineModal(true)}
-            className="shrink-0 py-2.5 px-4 rounded-xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-xs shadow-lg flex items-center gap-1.5 active:scale-95 transition"
-          >
-            <MessageCircle className="w-4 h-4 fill-current" />
-            <span>結果の続きを見る</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 公式LINE誘導プレビュー＆遷移モーダル */}
-      {showLineModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-sm bg-slate-900 border border-slate-700 rounded-3xl p-6 space-y-4 text-white shadow-2xl"
-          >
-            <div className="flex items-center justify-between">
-              <span className="px-3 py-1 rounded-full bg-[#06C755]/20 text-[#4ade80] text-xs font-black">
-                公式LINE 友だち追加特典
-              </span>
-              <button
-                type="button"
-                onClick={() => setShowLineModal(false)}
-                className="text-xs text-slate-400 hover:text-white"
-              >
-                閉じる ✕
-              </button>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-lg font-black leading-snug">
-                {primary.title} のあなたへ専用ロードマップを送付します！
-              </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                公式LINEを追加後、あなたのタイプに合った
-                <strong className="text-amber-300">「具体的な物件探しのコツ・成功事例・約5分の解説漫画動画」</strong>
-                や、推奨プラン（{primary.recommendedCourse.name}）の個別相談案内をお届けします。
-              </p>
-            </div>
-
-            <div className="bg-slate-950 rounded-2xl p-3.5 border border-slate-800 text-xs space-y-1.5">
-              <div className="text-slate-400 font-bold">【公式LINEで受け取れる内容】</div>
-              <div className="text-emerald-300 font-bold">・{primary.lineBenefitHighlight}</div>
-              <div className="text-slate-300">・漫画でわかる！自動化ビジネス構築のすべて</div>
-              <div className="text-slate-300">・現役オーナー「さんご」との無料個別相談（最終確認）</div>
-            </div>
-
-            <a
-              href={OFFICIAL_LINE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full py-3.5 px-4 rounded-2xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg transition"
-            >
-              <MessageCircle className="w-5 h-5 fill-current" />
-              <span>LINEアプリを開いて特典を受け取る</span>
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          </motion.div>
-        </div>
-      )}
     </div>
   );
 };
