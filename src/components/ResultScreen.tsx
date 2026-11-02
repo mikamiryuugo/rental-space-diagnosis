@@ -16,15 +16,20 @@ import {
   Layers,
   ExternalLink,
   Crown,
+  Check,
+  X,
+  ClipboardList,
 } from 'lucide-react';
 import { PersonaType, ScoreProfile } from '../types/diagnosis';
-import { PERSONA_TYPES } from '../data/diagnosisData';
+import { PERSONA_TYPES, QUESTIONS } from '../data/diagnosisData';
 import { DynamicIcon } from './DynamicIcon';
+import { AnswerRecord } from '../App';
 
 interface ResultScreenProps {
   primary: PersonaType;
   secondary: PersonaType;
   score: ScoreProfile;
+  history: AnswerRecord[];
   onRestart: () => void;
   onSwitchPersona: (persona: PersonaType) => void;
 }
@@ -38,10 +43,12 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   primary,
   secondary,
   score,
+  history,
   onRestart,
   onSwitchPersona,
 }) => {
   const [showLineModal, setShowLineModal] = useState(false);
+  const [showAnswerHistory, setShowAnswerHistory] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -52,8 +59,29 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
     if (val >= 75) return '150万〜200万円〜（大型・丸投げOK）';
     if (val >= 55) return '100万〜150万円（中規模・物件サポート）';
     if (val >= 35) return '50万〜100万円（標準スタート）';
-    return '30万〜50万円前後（スモール・DIY重視）';
+    return '50万円前後（少額スタート）';
   };
+
+  // ユーザーの5軸スコア（①初期予算感 ②物件探し耐性 ③エリア ④リスク許容度 ⑤設営耐性）から個別診断コメントを生成
+  const personalSummaryPoints = [
+    score.budget >= 75
+      ? '① 初期予算感：150万〜200万円以上のゆとりある資金力を活かし、大型案件や完全丸投げでのスピード立ち上げが可能です。'
+      : score.budget >= 50
+      ? '① 初期予算感：100万円前後のバランスが良い予算感で、優良物件の確保から自社集客の構築まで手堅く進められます。'
+      : '① 初期予算感：50万円前後の少額スタート志向。無駄な初期コストを削り、リスクを最小限に抑えて始める戦略が合っています。',
+    score.search >= 50
+      ? '② 物件探し耐性：ネットでの物件リサーチが苦にならない強みがあります。正しい業者開拓ノウハウを学べば自力でお宝物件を発掘できます。'
+      : '② 物件探し耐性：物件探しに時間をかけるより、プロの『物件探しサポート』や『丸投げ』を活用してショートカットするのが圧倒的に確実です。',
+    score.attachment >= 50
+      ? '③ エリア：「ここに出したい」というこだわり派。郊外や地元で出す場合は、地域需要が底堅い『レンタルスタジオ』等に絞るのが鉄則です。'
+      : '③ エリア：事業と割り切って「遠隔・どこでもOK」な合理派。全国の高利回りエリアをターゲットに手放し資産を作れます。',
+    score.mindset >= 55
+      ? '④ リスク許容度：オーナーとしての自責マインドが高く、1店舗で月利15万〜20万円以上や複数店舗展開・M&A売却も十分に狙えます。'
+      : '④ リスク許容度：失敗を避けて手堅く進めたい慎重派。まずは『開業保証』をつけて月3万〜10万円の負けない1店舗目を着実に作りましょう。',
+    score.diy >= 50
+      ? '⑤ 設営耐性：家具の組み立てや設営作業もOKなタイプ。自力で動ける分、初期費用を大きく圧縮して高利回りを実現できます。'
+      : '⑤ 設営耐性：設営作業はなるべく省きたいタイプ。設備がシンプルな『ダンススタジオ・会議室』を選ぶか、設営までプロに任せるのが正解です。',
+  ];
 
   const axes = [
     {
@@ -99,7 +127,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   ];
 
   return (
-    <div className="w-full max-w-md mx-auto min-h-dvh pb-28 px-4 pt-5 text-white space-y-6">
+    <div className="w-full max-w-lg mx-auto min-h-dvh pb-28 px-4 pt-5 text-white space-y-6">
       {/* ヘッダーラベル */}
       <div className="flex items-center justify-between">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">
@@ -336,19 +364,35 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       </div>
 
-      {/* 5つの評価軸・スコア分析グラフ */}
+      {/* 5つの評価軸・スコア分析グラフ＆パーソナライズ総評 */}
       <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
         <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-          <h2 className="text-base font-black text-white">あなたの5軸パラメータ分析</h2>
-          <span className="text-[11px] text-slate-400">回答データに基づく診断値</span>
+          <h2 className="text-base sm:text-lg font-black text-white">あなたの5軸パラメータ診断結果</h2>
+          <span className="text-xs font-bold text-indigo-300 bg-indigo-950/70 px-2.5 py-0.5 rounded-full border border-indigo-500/30">
+            回答スコア分析
+          </span>
+        </div>
+
+        {/* 回答から導き出された5軸別の個別フィードバック */}
+        <div className="bg-slate-950/80 border border-indigo-500/30 rounded-2xl p-4 space-y-2">
+          <div className="text-xs sm:text-sm font-black text-indigo-300 mb-1">
+            ▼ あなたの回答から見えた5つの適性診断：
+          </div>
+          <ul className="space-y-2 text-xs sm:text-sm text-slate-200 leading-relaxed">
+            {personalSummaryPoints.map((pt, i) => (
+              <li key={i} className="bg-slate-900/90 border border-slate-800 rounded-xl px-3 py-2">
+                {pt}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="space-y-4">
           {axes.map((axis, idx) => (
             <div key={idx} className="space-y-1.5">
-              <div className="flex items-center justify-between text-xs sm:text-sm">
-                <span className="font-black text-white">{axis.label}</span>
-                <span className="px-2.5 py-0.5 rounded-lg bg-slate-800 text-amber-300 font-bold text-xs border border-slate-700">
+              <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
+                <span className="font-black text-white whitespace-nowrap">{axis.label}</span>
+                <span className="px-2.5 py-0.5 rounded-lg bg-slate-800 text-amber-300 font-bold text-xs border border-slate-700 whitespace-nowrap">
                   {axis.badge}
                 </span>
               </div>
@@ -368,18 +412,78 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           ))}
         </div>
 
+        {/* 回答した全11問の振り返り一覧（アコーディオン） */}
+        {history.length > 0 && (
+          <div className="pt-3 border-t border-slate-800">
+            <button
+              type="button"
+              onClick={() => setShowAnswerHistory(!showAnswerHistory)}
+              className="w-full py-2.5 px-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-xs sm:text-sm font-bold text-slate-200 flex items-center justify-between transition"
+            >
+              <span className="flex items-center gap-2">
+                <ClipboardList className="w-4 h-4 text-indigo-400" />
+                <span>あなたの回答内容（全{history.length}問）を振り返る</span>
+              </span>
+              <span className="text-xs text-indigo-300">
+                {showAnswerHistory ? '閉じる ▲' : '一覧を見る ▼'}
+              </span>
+            </button>
+
+            {showAnswerHistory && (
+              <div className="mt-2.5 space-y-2 max-h-72 overflow-y-auto pr-1">
+                {history.map((record, index) => {
+                  const q = QUESTIONS[record.questionIndex];
+                  if (!q) return null;
+                  return (
+                    <div
+                      key={index}
+                      className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex items-start justify-between gap-3 text-xs"
+                    >
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-bold text-indigo-400 block">
+                          Q{index + 1}. {q.axisLabel}
+                        </span>
+                        <p className="text-slate-200 font-medium leading-snug">{q.question}</p>
+                      </div>
+                      <span
+                        className={`shrink-0 inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-black text-xs ${
+                          record.isYes
+                            ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-500/40'
+                            : 'bg-rose-950/80 text-rose-300 border border-rose-500/40'
+                        }`}
+                      >
+                        {record.isYes ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>はい</span>
+                          </>
+                        ) : (
+                          <>
+                            <X className="w-3.5 h-3.5" />
+                            <span>いいえ</span>
+                          </>
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* サブタイプ（第2候補）の提案 */}
         <div className="mt-4 pt-4 border-t border-slate-800/80 flex items-center justify-between gap-3">
           <div className="space-y-0.5">
-            <span className="text-[10px] text-slate-400 block">
+            <span className="text-xs text-slate-300 block">
               僅差でマッチした第2候補のスタイル：
             </span>
-            <span className="text-xs font-bold text-indigo-300">{secondary.title}</span>
+            <span className="text-xs sm:text-sm font-bold text-indigo-300">{secondary.title}</span>
           </div>
           <button
             type="button"
             onClick={() => onSwitchPersona(secondary)}
-            className="shrink-0 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 border border-slate-700 transition"
+            className="shrink-0 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white border border-slate-700 transition"
           >
             詳細を見る
           </button>

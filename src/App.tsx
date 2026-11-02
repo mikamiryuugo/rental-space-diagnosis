@@ -13,7 +13,7 @@ import { ResultScreen } from './components/ResultScreen';
 
 type ScreenState = 'start' | 'quiz' | 'analyzing' | 'result';
 
-interface AnswerRecord {
+export interface AnswerRecord {
   questionIndex: number;
   isYes: boolean;
   previousScore: ScoreProfile;
@@ -160,7 +160,7 @@ export const App: React.FC = () => {
                   5つの評価軸から最適スタイルを算出中
                 </h2>
                 <p className="text-xs text-slate-400">
-                  予算感・DIY耐性・エリア愛着・物件探し・マインドを照合しています
+                  初期予算感・物件探し耐性・エリア・リスク許容度・設営耐性を照合しています
                 </p>
               </div>
             </motion.div>
@@ -178,6 +178,7 @@ export const App: React.FC = () => {
                 primary={activePrimary}
                 secondary={activeSecondary}
                 score={diagnosisResult.normalizedScore}
+                history={history}
                 onRestart={handleStart}
                 onSwitchPersona={(persona) => {
                   setCustomPrimary(persona);
