@@ -113,7 +113,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
             </div>
             <div className="bg-slate-950/80 rounded-2xl py-2.5 px-2 border border-slate-800">
               <Gift className="w-5 h-5 text-emerald-400 mx-auto mb-1" />
-              <div className="text-xs sm:text-sm font-black text-white">特典つき</div>
+              <div className="text-xs sm:text-sm font-black text-white">最適解</div>
               <div className="text-[11px] font-medium text-slate-300">タイプ別戦略</div>
             </div>
           </div>
@@ -168,7 +168,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
                 className="mt-2.5 bg-slate-900/95 border border-slate-700 rounded-2xl p-3 space-y-2 max-h-64 overflow-y-auto"
               >
                 <p className="text-xs text-slate-300 mb-2 px-1">
-                  ※タップすると各タイプの結果画面・LINE誘導CTAを直接プレビューできます：
+                  ※タップすると各タイプの結果画面を直接プレビューできます：
                 </p>
                 {PERSONA_TYPES.map((p) => (
                   <button

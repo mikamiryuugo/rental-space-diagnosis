@@ -3,10 +3,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   Sparkles,
-  Gift,
-  MessageCircle,
   RotateCcw,
-  ChevronRight,
   Award,
   TrendingUp,
   Crown,
@@ -24,11 +21,6 @@ interface ResultScreenProps {
   onSwitchPersona: (persona: PersonaType) => void;
 }
 
-/**
- * 公式LINEの登録URL
- */
-const OFFICIAL_LINE_URL = 'https://lin.ee/nkBUi41';
-
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   primary,
   onRestart,
@@ -38,7 +30,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
   }, [primary.id]);
 
   return (
-    <div className="w-full max-w-lg mx-auto min-h-dvh pb-12 px-4 pt-5 text-white space-y-5">
+    <div className="w-full max-w-lg mx-auto min-h-dvh pb-10 px-4 pt-5 text-white space-y-5">
       {/* ヘッダーラベル */}
       <div className="flex items-center justify-between">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-bold">
@@ -105,7 +97,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       </div>
 
-      {/* ② タイプの特徴・強み・注意点（コンパクトまとめ） */}
+      {/* ② タイプの特徴・強み・注意点 */}
       <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-3.5 shadow-xl">
         <div className="flex items-center gap-2 border-b border-slate-800 pb-2.5">
           <Sparkles className="w-4 h-4 text-indigo-400" />
@@ -158,7 +150,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       </div>
 
-      {/* ③ あなたに最適なサポートプラン（LPの3コース連動） */}
+      {/* ③ あなたに最適なサポートプラン */}
       <div className="bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-900 border border-amber-500/40 rounded-3xl p-4 sm:p-5 space-y-3 shadow-xl">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
@@ -182,40 +174,15 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       </div>
 
-      {/* ④ 公式LINE登録CTA */}
-      <div className="relative rounded-3xl p-1 bg-gradient-to-r from-[#06C755] via-emerald-400 to-teal-500 shadow-[0_12px_40px_rgba(6,199,85,0.3)]">
-        <div className="bg-slate-950 rounded-[22px] p-5 space-y-3.5">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#06C755]/20 border border-[#06C755]/40 text-[#4ade80] text-xs font-black">
-            <Gift className="w-3.5 h-3.5" />
-            <span>診断完了者限定・公式LINE無料プレゼント</span>
-          </div>
-
-          <h2 className="text-base sm:text-lg font-black text-white leading-snug">
-            あなたのタイプに合った具体的な物件探しのコツや事例を
-            <span className="text-[#4ade80]">LINEで無料プレゼント！</span>
-          </h2>
-
-          <div className="bg-slate-900 border border-emerald-500/30 rounded-2xl p-3.5 text-xs text-slate-200 space-y-1.5">
-            <div className="font-bold text-emerald-300">
-              🎁 {primary.lineBenefitHighlight}
-            </div>
-            <div className="text-slate-300">
-              ・約5分でわかる「自動化ビジネス構築」解説漫画動画＆個別相談案内
-            </div>
-          </div>
-
-          <a
-            href={OFFICIAL_LINE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-4 px-5 rounded-2xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-base shadow-[0_8px_25px_rgba(6,199,85,0.45)] flex items-center justify-center gap-2 transition transform active:scale-95 border border-white/20"
-          >
-            <MessageCircle className="w-5 h-5 fill-current shrink-0" />
-            <span>公式LINEで結果の続きと特典を受け取る</span>
-            <ChevronRight className="w-5 h-5 shrink-0" />
-          </a>
-        </div>
-      </div>
+      {/* もう一度診断するボタン */}
+      <button
+        type="button"
+        onClick={onRestart}
+        className="w-full py-3.5 px-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition active:scale-95"
+      >
+        <RotateCcw className="w-4 h-4" />
+        <span>最初からもう一度診断する</span>
+      </button>
     </div>
   );
 };
