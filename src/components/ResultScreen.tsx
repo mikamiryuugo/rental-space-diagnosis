@@ -145,9 +145,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       </div>
 
       {/* メイン結果カード（ペルソナヒーロー） */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className={`relative rounded-3xl p-6 bg-gradient-to-br ${primary.gradient} shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden border border-white/20`}
       >
         <div className="absolute -right-10 -top-10 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none" />
@@ -196,7 +194,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* タイプの特徴・詳細解説 */}
       <div className="bg-slate-900/95 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-xl">
@@ -397,11 +395,9 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
                 </span>
               </div>
               <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
-                <motion.div
-                  className={`h-full rounded-full bg-gradient-to-r ${axis.color}`}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${axis.value}%` }}
-                  transition={{ duration: 0.6, delay: idx * 0.08 }}
+                <div
+                  className={`h-full rounded-full bg-gradient-to-r ${axis.color} transition-all duration-500 ease-out`}
+                  style={{ width: `${axis.value}%` }}
                 />
               </div>
               <div className="flex justify-between text-xs font-medium text-slate-300">
@@ -493,10 +489,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
       {/* ================================================================= */}
       {/* 最終画面（CTA）の要件：公式LINE登録への強力なリード獲得セクション */}
       {/* ================================================================= */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.2 }}
+      <div
         className="relative rounded-3xl p-1 bg-gradient-to-r from-[#06C755] via-emerald-400 to-teal-500 shadow-[0_15px_50px_rgba(6,199,85,0.35)]"
       >
         <div className="bg-slate-950 rounded-[22px] p-5 sm:p-6 space-y-4">
@@ -552,7 +545,7 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             ※ワンタップで友だち追加完了・あなたに最適なプラン診断や個別相談もLINEから受けられます
           </p>
         </div>
-      </motion.div>
+      </div>
 
       {/* 他のタイプも見てみる（全9タイプの切替セレクター） */}
       <div className="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-4 space-y-3">

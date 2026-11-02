@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import {
   INITIAL_SCORE,
   QUESTIONS,
@@ -11,7 +10,7 @@ import { StartScreen } from './components/StartScreen';
 import { SwipeCard } from './components/SwipeCard';
 import { ResultScreen } from './components/ResultScreen';
 
-type ScreenState = 'start' | 'quiz' | 'analyzing' | 'result';
+type ScreenState = 'start' | 'quiz' | 'result';
 
 export interface AnswerRecord {
   questionIndex: number;
@@ -33,11 +32,18 @@ export const App: React.FC = () => {
     setHistory([]);
     setCustomPrimary(null);
     setScreen('quiz');
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
   // 質問への回答処理（はい / いいえ）
   const handleAnswer = (isYes: boolean) => {
+    if (screen !== 'quiz') return;
     const currentQuestion = QUESTIONS[currentIndex];
+    if (!currentQuestion) {
+      setScreen('result');
+      return;
+    }
+
     const effect = isYes ? currentQuestion.yesEffect : currentQuestion.noEffect;
 
     // 履歴を保存
@@ -60,14 +66,11 @@ export const App: React.FC = () => {
     };
     setScore(updatedScore);
 
-    // 次の質問へ進むか、最終質問なら分析演出を挟んで結果画面へ
+    // 次の質問へ進むか、最終質問なら即座に結果画面へ遷移
     if (currentIndex + 1 < QUESTIONS.length) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      setScreen('analyzing');
-      setTimeout(() => {
-        setScreen('result');
-      }, 650);
+      setScreen('result');
     }
   };
 
@@ -104,90 +107,38 @@ export const App: React.FC = () => {
       </div>
 
       <main className="relative z-10 w-full">
-        <AnimatePresence mode="wait">
-          {screen === 'start' && (
-            <motion.div
-              key="start"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              <StartScreen
-                onStart={handleStart}
-                onSelectPersonaPreview={handleSelectPersonaPreview}
-              />
-            </motion.div>
-          )}
+        {screen === 'start' && (
+          <StartScreen
+            onStart={handleStart}
+            onSelectPersonaPreview={handleSelectPersonaPreview}
+          />
+        )}
 
-          {screen === 'quiz' && (
-            <motion.div
-              key="quiz"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <SwipeCard
-                question={QUESTIONS[currentIndex]}
-                nextQuestion={QUESTIONS[currentIndex + 1]}
-                currentIndex={currentIndex}
-                totalQuestions={QUESTIONS.length}
-                onAnswer={handleAnswer}
-                onUndo={handleUndo}
-                canUndo={history.length > 0}
-              />
-            </motion.div>
-          )}
+        {screen === 'quiz' && QUESTIONS[currentIndex] && (
+          <SwipeCard
+            question={QUESTIONS[currentIndex]}
+            nextQuestion={QUESTIONS[currentIndex + 1]}
+            currentIndex={currentIndex}
+            totalQuestions={QUESTIONS.length}
+            onAnswer={handleAnswer}
+            onUndo={handleUndo}
+            canUndo={history.length > 0}
+          />
+        )}
 
-          {screen === 'analyzing' && (
-            <motion.div
-              key="analyzing"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              className="min-h-dvh flex flex-col items-center justify-center px-6 text-center space-y-5"
-            >
-              <div className="relative w-20 h-20 flex items-center justify-center">
-                <div className="absolute inset-0 rounded-full border-4 border-indigo-500/30 animate-ping" />
-                <div className="w-16 h-16 rounded-full border-4 border-t-indigo-400 border-r-purple-400 border-b-pink-400 border-l-transparent animate-spin" />
-              </div>
-              <div className="space-y-1.5">
-                <p className="text-xs font-mono text-indigo-400 tracking-widest uppercase">
-                  ANALYZING YOUR PROFILE...
-                </p>
-                <h2 className="text-xl font-black text-white">
-                  5つの評価軸から最適スタイルを算出中
-                </h2>
-                <p className="text-xs text-slate-400">
-                  初期予算感・物件探し耐性・エリア・リスク許容度・設営耐性を照合しています
-                </p>
-              </div>
-            </motion.div>
-          )}
-
-          {screen === 'result' && (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              <ResultScreen
-                primary={activePrimary}
-                secondary={activeSecondary}
-                score={diagnosisResult.normalizedScore}
-                history={history}
-                onRestart={handleStart}
-                onSwitchPersona={(persona) => {
-                  setCustomPrimary(persona);
-                  setScore(persona.targetProfile);
-                }}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {screen === 'result' && (
+          <ResultScreen
+            primary={activePrimary}
+            secondary={activeSecondary}
+            score={diagnosisResult.normalizedScore}
+            history={history}
+            onRestart={handleStart}
+            onSwitchPersona={(persona) => {
+              setCustomPrimary(persona);
+              setScore(persona.targetProfile);
+            }}
+          />
+        )}
       </main>
     </div>
   );

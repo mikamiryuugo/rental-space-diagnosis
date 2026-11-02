@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
 import { Check, X, RotateCcw, Sparkles, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Question } from '../types/diagnosis';
@@ -24,41 +24,47 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
   canUndo,
 }) => {
   const [exitX, setExitX] = useState<number | null>(null);
+  const swipingQuestionIdRef = useRef<number | null>(null);
 
   // ドラッグ距離のトラッキング
   const x = useMotionValue(0);
-  const rotate = useTransform(x, [-220, 220], [-14, 14]);
-  const cardOpacity = useTransform(x, [-280, -180, 0, 180, 280], [0.5, 1, 1, 1, 0.5]);
+  const rotate = useTransform(x, [-220, 220], [-12, 12]);
 
   // スタンプ（YES / NO）の透明度とスケール
-  const yesOpacity = useTransform(x, [15, 110], [0, 1]);
-  const noOpacity = useTransform(x, [-15, -110], [0, 1]);
-  const yesScale = useTransform(x, [15, 110], [0.8, 1.08]);
-  const noScale = useTransform(x, [-15, -110], [0.8, 1.08]);
+  const yesOpacity = useTransform(x, [15, 95], [0, 1]);
+  const noOpacity = useTransform(x, [-15, -95], [0, 1]);
+  const yesScale = useTransform(x, [15, 95], [0.8, 1.08]);
+  const noScale = useTransform(x, [-15, -95], [0.8, 1.08]);
 
-  // 背景カードのスケール（ドラッグ中に後ろのカードが浮き上がる演出）
-  const nextCardScale = useTransform(x, [-160, 0, 160], [1, 0.94, 1]);
-  const nextCardOpacity = useTransform(x, [-160, 0, 160], [1, 0.65, 1]);
+  // 質問が切り替わるたびに座標とロック状態を確実に初期化
+  useEffect(() => {
+    x.stop();
+    x.set(0);
+    setExitX(null);
+    swipingQuestionIdRef.current = null;
+  }, [question.id, x]);
+
+  const triggerSwipe = (isYes: boolean) => {
+    if (swipingQuestionIdRef.current === question.id) return;
+    swipingQuestionIdRef.current = question.id;
+    setExitX(isYes ? 380 : -380);
+
+    window.setTimeout(() => {
+      onAnswer(isYes);
+    }, 160);
+  };
 
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 85;
-    const velocityThreshold = 450;
+    const threshold = 50;
+    const velocityThreshold = 240;
 
     if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
       triggerSwipe(true);
     } else if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
       triggerSwipe(false);
-    }
-  };
-
-  const triggerSwipe = (isYes: boolean) => {
-    if (exitX !== null) return;
-    setExitX(isYes ? 420 : -420);
-    setTimeout(() => {
-      onAnswer(isYes);
-      setExitX(null);
+    } else {
       x.set(0);
-    }, 190);
+    }
   };
 
   const progressPercentage = Math.round(((currentIndex + 1) / totalQuestions) * 100);
@@ -94,11 +100,9 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
 
         {/* ゲージ */}
         <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700">
-          <motion.div
-            className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: `${progressPercentage}%` }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
+          <div
+            className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300 ease-out"
+            style={{ width: `${progressPercentage}%` }}
           />
         </div>
       </div>
@@ -107,10 +111,9 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       <div className="relative w-full flex items-center justify-center my-1 min-h-[390px] sm:min-h-[420px]">
         {/* 次のカード（背面に待機してサクサク感を演出） */}
         {nextQuestion && (
-          <motion.div
+          <div
             key={`next-${nextQuestion.id}`}
-            style={{ scale: nextCardScale, opacity: nextCardOpacity }}
-            className="absolute inset-0 w-full h-full bg-slate-900/90 rounded-3xl border border-slate-700/70 p-6 flex flex-col justify-between shadow-xl pointer-events-none transform translate-y-3"
+            className="absolute inset-0 w-full h-full bg-slate-900/90 rounded-3xl border border-slate-700/70 p-6 flex flex-col justify-between shadow-xl pointer-events-none transform translate-y-3 scale-[0.95] opacity-65"
           >
             <div className="flex items-center justify-between">
               <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
@@ -127,23 +130,23 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
               </h3>
             </div>
             <div className="h-12" />
-          </motion.div>
+          </div>
         )}
 
         {/* 現在のアクティブカード */}
         <motion.div
           key={`current-${question.id}`}
-          style={{ x, rotate, opacity: cardOpacity }}
+          style={{ x, rotate }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.85}
+          dragElastic={0.9}
           onDragEnd={handleDragEnd}
           animate={
             exitX !== null
-              ? { x: exitX, opacity: 0, rotate: exitX > 0 ? 18 : -18 }
-              : { x: 0, opacity: 1, rotate: 0 }
+              ? { x: exitX, opacity: 0 }
+              : { x: 0, opacity: 1 }
           }
-          transition={{ type: 'spring', stiffness: 340, damping: 26 }}
+          transition={{ duration: 0.16, ease: 'easeOut' }}
           className="relative z-10 w-full h-full bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 rounded-3xl border-2 border-slate-700/90 p-6 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.6)] cursor-grab active:cursor-grabbing touch-pan-y overflow-hidden"
         >
           {/* 背景の光彩エフェクト */}
