@@ -50,7 +50,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
           <span className="block mt-1 bg-gradient-to-r from-amber-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent">
             「手放しで勝てるレンスペ開業」
           </span>
-          8タイプ適性診断
+          {PERSONA_TYPES.length}タイプ適性診断
         </h1>
 
         <p className="text-sm sm:text-[15px] text-slate-200 leading-relaxed">
@@ -75,7 +75,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
               <span className="text-sm font-black text-white">5つの評価軸で精密スコアリング</span>
             </div>
             <span className="text-xs font-bold text-indigo-300 bg-indigo-950/80 px-3 py-1 rounded-full border border-indigo-500/40 shrink-0">
-              全8タイプ判定
+              全{PERSONA_TYPES.length}タイプ判定
             </span>
           </div>
 
@@ -157,7 +157,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
               <span>
                 {showCatalog
                   ? '診断タイプ一覧を閉じる'
-                  : '収録されている全8タイプの診断結果一覧を見る'}
+                  : `収録されている全${PERSONA_TYPES.length}タイプの診断結果一覧を見る`}
               </span>
             </button>
 

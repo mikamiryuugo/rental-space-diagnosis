@@ -11,18 +11,30 @@ export const INITIAL_SCORE: ScoreProfile = {
 export const QUESTIONS: Question[] = [
   {
     id: 1,
+    category: 'BASE 01',
+    axisLabel: '① 本業・資金の余裕',
+    question: 'そもそも本業の収入が安定していて、生活費とは別の「余剰資金」で挑戦できますか？',
+    subText: 'レンタルスペースは、なけなしの全財産を切り崩してやるものではありません。本業や収入の土台があるかの確認です。',
+    iconName: 'ShieldCheck',
+    yesLabel: '本業は安定・余剰資金あり！',
+    noLabel: '余裕はない・なけなしの資金',
+    yesEffect: { budget: 15, mindset: 15 },
+    noEffect: { budget: -25, mindset: -40 },
+  },
+  {
+    id: 2,
     category: 'BUDGET 01',
     axisLabel: '① 初期予算感',
     question: '開業資金として「100万円」を用意することができますか？',
     subText: '物件取得費・インテリア・備品代などを含めた初期予算のイメージでお答えください。',
     iconName: 'Wallet',
     yesLabel: '100万円OK！',
-    noLabel: '50万円前後で抑えたい',
+    noLabel: '100万円以下で抑えたい',
     yesEffect: { budget: 25, mindset: 5 },
     noEffect: { budget: -20, diy: 5 },
   },
   {
-    id: 2,
+    id: 3,
     category: 'BUDGET 02',
     axisLabel: '① 初期予算感（上限）',
     question: '良い物件や勝てるプランがあれば、「150万〜200万円以上」の投資も検討できる？',
@@ -34,7 +46,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { budget: -15 },
   },
   {
-    id: 3,
+    id: 4,
     category: 'SEARCH 01',
     axisLabel: '② 物件探し耐性',
     question: 'ネットで色んな物件情報を検索したり、リサーチするのは好き？',
@@ -46,7 +58,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { search: -25 },
   },
   {
-    id: 4,
+    id: 5,
     category: 'OUTSOURCE 01',
     axisLabel: '② 物件探し耐性（外注志向）',
     question: '物件探しの手間を考えるなら、お金がかかってもプロに丸投げしたい？',
@@ -58,7 +70,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { diy: 15, search: 20 },
   },
   {
-    id: 5,
+    id: 6,
     category: 'AREA 01',
     axisLabel: '③ エリア',
     question: '「ここに出したい！」というこだわりのエリアがある？',
@@ -70,7 +82,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { attachment: -25, mindset: 10 },
   },
   {
-    id: 6,
+    id: 7,
     category: 'STANCE 01',
     axisLabel: '③ ビジネス割り切り度',
     question: '場所や内装への愛着よりも、「事業として自動で儲かるかが大事」と割り切れる？',
@@ -82,11 +94,11 @@ export const QUESTIONS: Question[] = [
     noEffect: { attachment: 18 },
   },
   {
-    id: 7,
+    id: 8,
     category: 'RISK 01',
     axisLabel: '④ リスク許容度',
     question: '多少のリスクを取ってでも、「月利15万〜20万円以上」を大きく狙いたい？',
-    subText: 'まずは小さく手堅く月3〜5万円を稼ぐか、最初から大きく収益を狙いたいか。',
+    subText: 'まずは小さく手堅く月2〜5万円を稼ぐか、最初から大きく収益を狙いたいか。',
     iconName: 'Flame',
     yesLabel: '大きく収益を狙いたい！',
     noLabel: 'まずは手堅く堅実に',
@@ -94,19 +106,19 @@ export const QUESTIONS: Question[] = [
     noEffect: { mindset: -18 },
   },
   {
-    id: 8,
+    id: 9,
     category: 'MINDSET 01',
-    axisLabel: '④ リスク許容度（自責思考）',
-    question: 'もし売上が伸び悩んでも「すべて自分の経営判断（自責）」と割り切って改善を楽しめる？',
-    subText: 'ポータル頼みではなく自社集客や改善など、事業オーナーとして向き合うマインドセットの確認です。',
+    axisLabel: '④ リスク許容度（自己責任）',
+    question: '万が一うまくいかなくても「自分の経営判断（失敗してもOK）」と割り切れる余剰資金ですか？',
+    subText: '事業である以上100%の保証はありません。「絶対に失えないお金」ではなく、万が一失敗しても生活が揺らがないかの確認です。',
     iconName: 'ShieldCheck',
-    yesLabel: '自責で改善していける！',
-    noLabel: '絶対に失敗したくない・不安',
-    yesEffect: { mindset: 28 },
-    noEffect: { mindset: -30 },
+    yesLabel: '失敗しても大丈夫・自己責任！',
+    noLabel: '絶対に失敗できない・失うと困る',
+    yesEffect: { mindset: 25 },
+    noEffect: { mindset: -45 },
   },
   {
-    id: 9,
+    id: 10,
     category: 'SETUP 01',
     axisLabel: '⑤ 設営耐性',
     question: '家具の組み立てなど、設営作業は苦じゃない（むしろ好き）？',
@@ -118,7 +130,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { diy: -25 },
   },
   {
-    id: 10,
+    id: 11,
     category: 'ACTION 01',
     axisLabel: '⑤ 開業への時間と余力',
     question: '今からすぐに開業に向けて動ける「時間」も「余力」もある？',
@@ -541,18 +553,70 @@ export const PERSONA_TYPES: PersonaType[] = [
     },
     lineBenefitHighlight: '失敗リスクを最小化する「3つのハードル突破法」',
     targetProfile: {
-      budget: 25,
+      budget: 55,
       diy: 25,
       attachment: 40,
       search: 20,
-      mindset: 15,
+      mindset: 30,
+    },
+  },
+  {
+    id: 'stop-not-recommended',
+    code: 'TYPE 09',
+    title: '【今はやらない方がいい！本業強化＆資金作り優先タイプ】',
+    catchphrase: 'なけなしの全財産で勝負するのはNG！まずは本業を強くして余剰資金を作ってから！',
+    badgeText: '今は開業見送り推奨×本業・貯蓄優先',
+    budgetRange: 'まずは余剰資金100万円〜の確保',
+    difficulty: 'ー (今は開業見送り推奨)',
+    expectedReturn: '今は開業せず、本業の収入アップ・貯蓄を最優先',
+    gradient: 'from-slate-700 via-rose-900 to-slate-900',
+    accentColor: 'rose',
+    iconName: 'ShieldCheck',
+    description:
+      '初期予算が100万円以下で、かつ「絶対に失敗できない・失うと生活に困るお金」でレンタルスペースを始めようとしているなら、今は絶対にやらない方がいいです。レンタルスペースは事業である以上リスクもあり、なけなしの全財産を切り崩して一発逆転を狙うものではありません。まずは本業の収入をしっかり安定させ、「万が一うまくいかなくても大丈夫」と割り切れる余剰資金ができてから挑戦しましょう。',
+    strengths: [
+      '開業前に「今の資金状況やリスク許容度では危ない」と冷静に立ち止まれたこと自体が最大のリスク回避',
+      '無理に借金や生活防衛資金を取り崩してスタートし、焦ってダメな物件を掴む最悪の失敗を未然に防げる',
+      'まずは本業やスキルアップに集中してキャッシュフローを強くすることで、将来本当に勝てる土台が作れる',
+    ],
+    weaknesses: [
+      '「少額ですぐに誰でも儲かる」という甘い言葉に流されて、生活費やなけなしの貯金を投じてしまうこと',
+      '心の余裕・資金の余裕がない状態で始めると、少しの空室期間やトラブルでも精神的に追い詰められてしまう',
+    ],
+    strategy: {
+      areaAndProperty:
+        '今は物件を探したり契約したりする段階ではありません。焦って格安の悪条件物件に手を出すのは厳禁です。',
+      conceptAndSetup:
+        'まずは本業での収入アップや支出の見直しを行い、生活防衛資金とは別に「100万円以上の余剰資金」を作ることに集中します。',
+      operationStyle:
+        '資金と心の余裕が整うまでは開業を見送り、情報収集だけにとどめておくのが最も賢明な判断です。',
+    },
+    recommendedSpaceTypes: ['今は開業見送り（本業への集中）', '生活防衛資金と余剰資金の確保', '100万円以上の余剰資金ができてから再検討'],
+    recommendedCourse: {
+      name: 'まずは本業強化・資金作りを優先（開業見送り）',
+      badge: '無理な開業はおすすめしません',
+      reason:
+        '当スクールでは、生活費やなけなしの全財産を切り崩してまで無理に開業することはお勧めしていません。まずは本業を強くして、万が一失敗しても良いと思える「余剰資金」ができてから、改めて一歩を踏み出しましょう！',
+      features: [
+        '生活防衛資金とは別に、失っても生活が揺らがない余剰資金（目安100万円〜）を貯める',
+        '本業の収入基盤を強化し、精神的にも金銭的にも余裕のある状態を作る',
+        '資金とマインドの準備が整ったタイミングで、改めて堅実な1店舗目を検討する',
+      ],
+    },
+    lineBenefitHighlight: '無理な開業はNG！失敗しないための資金計画と準備の考え方',
+    targetProfile: {
+      budget: 15,
+      diy: 30,
+      attachment: 40,
+      search: 30,
+      mindset: 10,
     },
   },
 ];
 
 /**
  * ユーザーの回答スコア（0〜100にクランプ済み）から最適な診断結果タイプを判定する関数
- * 特徴的な条件分岐（優先ルール）＋5軸の重み付きユークリッド距離で全8タイプに高精度に振り分ける
+ * 特徴的な条件分岐（優先ルール）＋5軸の重み付きユークリッド距離で全9タイプに高精度に振り分ける
  */
 export function diagnosePersona(rawScore: ScoreProfile): {
   primary: PersonaType;
@@ -569,8 +633,15 @@ export function diagnosePersona(rawScore: ScoreProfile): {
     mindset: clamp(rawScore.mindset),
   };
 
-  // 1. リスク許容度・自責マインドが著しく低い場合は「まずは不安解消・徹底伴走スタート型」を最優先で提案
-  if (score.mindset <= 28 && score.budget <= 45) {
+  // 1. 初期予算が100万円以下（budget <= 45）かつ「失敗しても良いと思えない／本業・余剰資金に余裕がない」（mindset <= 38）場合は「今はやらない方がいい」を最優先で判定
+  if (score.budget <= 45 && score.mindset <= 38) {
+    const primary = PERSONA_TYPES.find((p) => p.id === 'stop-not-recommended')!;
+    const secondary = PERSONA_TYPES.find((p) => p.id === 'mindset-reset-starter')!;
+    return { primary, secondary, normalizedScore: score };
+  }
+
+  // 2. 予算には余裕があるが慎重派・不安が強い場合は「まずは不安解消・徹底伴走スタート型」を提案
+  if (score.mindset <= 35 && score.budget > 45) {
     const primary = PERSONA_TYPES.find((p) => p.id === 'mindset-reset-starter')!;
     const secondary = PERSONA_TYPES.find((p) => p.id === 'solid-small-meeting')!;
     return { primary, secondary, normalizedScore: score };

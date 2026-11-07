@@ -27,7 +27,11 @@ export interface Question {
 }
 
 export interface RecommendedCourse {
-  name: '開業保証コース' | '物件探しサポートコース' | '丸投げコース';
+  name:
+    | '開業保証コース'
+    | '物件探しサポートコース'
+    | '丸投げコース'
+    | 'まずは本業強化・資金作りを優先（開業見送り）';
   badge: string;
   reason: string;
   features: string[];
@@ -39,8 +43,20 @@ export interface PersonaType {
   title: string;
   catchphrase: string;
   badgeText: string;
-  budgetRange: '30万〜50万円〜' | '50万〜100万円' | '100万円前後' | '150万円前後' | '200万円〜';
-  difficulty: '★☆☆☆☆ (初心者向け)' | '★★☆☆☆ (手軽)' | '★★★☆☆ (標準)' | '★★★★☆ (本格派)' | '★★★★★ (プロ志向)';
+  budgetRange:
+    | '30万〜50万円〜'
+    | '50万〜100万円'
+    | '100万円前後'
+    | '150万円前後'
+    | '200万円〜'
+    | 'まずは余剰資金100万円〜の確保';
+  difficulty:
+    | '★☆☆☆☆ (初心者向け)'
+    | '★★☆☆☆ (手軽)'
+    | '★★★☆☆ (標準)'
+    | '★★★★☆ (本格派)'
+    | '★★★★★ (プロ志向)'
+    | 'ー (今は開業見送り推奨)';
   expectedReturn: string;
   gradient: string;
   accentColor: string;
