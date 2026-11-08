@@ -108,19 +108,13 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       </div>
 
       {/* カードスタック領域 */}
-      <div className="relative w-full flex items-center justify-center my-1 min-h-[330px] sm:min-h-[360px]">
+      <div className="relative w-full flex items-center justify-center my-1 min-h-[300px] sm:min-h-[330px]">
         {/* 次のカード（背面に待機してサクサク感を演出） */}
         {nextQuestion && (
           <div
             key={`next-${nextQuestion.id}`}
-            className="absolute inset-0 w-full h-full bg-slate-900/90 rounded-3xl border border-slate-700/70 p-6 flex flex-col justify-between shadow-xl pointer-events-none transform translate-y-3 scale-[0.95] opacity-65"
+            className="absolute inset-0 w-full h-full bg-slate-900/90 rounded-3xl border border-slate-700/70 p-6 flex flex-col justify-center shadow-xl pointer-events-none transform translate-y-3 scale-[0.95] opacity-65"
           >
-            <div className="flex items-center justify-between">
-              <span className="px-3.5 py-1 rounded-full text-xs font-bold bg-slate-800 text-slate-400 border border-slate-700">
-                {nextQuestion.axisLabel}
-              </span>
-              <span className="text-xs font-mono text-slate-500">{nextQuestion.category}</span>
-            </div>
             <div className="my-auto flex flex-col items-center text-center space-y-4 opacity-40">
               <div className="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center text-slate-400">
                 <DynamicIcon name={nextQuestion.iconName} className="w-8 h-8" />
@@ -146,7 +140,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
               : { x: 0, opacity: 1 }
           }
           transition={{ duration: 0.16, ease: 'easeOut' }}
-          className="relative z-10 w-full h-full bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 rounded-3xl border-2 border-slate-700/90 p-6 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.6)] cursor-grab active:cursor-grabbing touch-pan-y overflow-hidden"
+          className="relative z-10 w-full h-full bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 rounded-3xl border-2 border-slate-700/90 p-6 flex flex-col justify-center shadow-[0_20px_50px_rgba(0,0,0,0.6)] cursor-grab active:cursor-grabbing touch-pan-y overflow-hidden"
         >
           {/* 背景の光彩エフェクト */}
           <div className="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -169,18 +163,8 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
             <span>いいえ</span>
           </motion.div>
 
-          {/* カードヘッダー */}
-          <div className="flex items-center justify-between z-10">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs sm:text-sm font-bold bg-indigo-500/20 text-indigo-200 border border-indigo-400/40">
-              <span>{question.axisLabel}</span>
-            </span>
-            <span className="text-xs font-mono font-semibold text-slate-400 tracking-wider">
-              {question.category}
-            </span>
-          </div>
-
           {/* 質問メインコンテンツ */}
-          <div className="my-auto flex flex-col items-center text-center space-y-5 z-10 py-3">
+          <div className="my-auto flex flex-col items-center text-center space-y-5 z-10 py-2">
             <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-br from-indigo-500/25 via-purple-500/25 to-pink-500/25 border border-indigo-400/40 flex items-center justify-center text-indigo-300 shadow-inner p-4">
               <DynamicIcon name={question.iconName} className="w-9 h-9 sm:w-10 sm:h-10" />
             </div>
