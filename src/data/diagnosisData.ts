@@ -26,7 +26,7 @@ export const QUESTIONS: Question[] = [
     category: 'BUDGET 01',
     axisLabel: '① 初期予算感',
     question: '開業資金として「100万円」を用意することができますか？',
-    subText: '物件取得費・インテリア・備品代などを含めた初期予算のイメージでお答えください。',
+    subText: '実際には100万円かからないケースも多いですが、ひとつの目安として聞いています。',
     iconName: 'Wallet',
     yesLabel: '100万円OK',
     noLabel: '100万円以下',
