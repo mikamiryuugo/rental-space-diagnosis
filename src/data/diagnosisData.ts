@@ -90,8 +90,8 @@ export const QUESTIONS: Question[] = [
     iconName: 'Compass',
     yesLabel: '自分でやりたい',
     noLabel: 'プロに任せる',
-    yesEffect: { search: 25, diy: 30 },
-    noEffect: { search: -20, diy: -25 },
+    yesEffect: { search: 15, diy: 20 },
+    noEffect: { search: -15, diy: -20 },
   },
   {
     id: 8,
@@ -102,7 +102,7 @@ export const QUESTIONS: Question[] = [
     iconName: 'HeartHandshake',
     yesLabel: '外注したい',
     noLabel: '自分で探す',
-    yesEffect: { search: -30, budget: 10 },
+    yesEffect: { search: -45, budget: 10 },
     noEffect: { search: 25, diy: 10 },
   },
   {
@@ -114,7 +114,7 @@ export const QUESTIONS: Question[] = [
     iconName: 'Crown',
     yesLabel: '全部丸投げ',
     noLabel: '設営は自分で',
-    yesEffect: { diy: -35, search: -20, budget: 15 },
+    yesEffect: { diy: -60, search: -30, budget: 15 },
     noEffect: { diy: 25 },
   },
 ];
@@ -623,7 +623,14 @@ export function diagnosePersona(rawScore: ScoreProfile): {
     return { primary, secondary, normalizedScore: score };
   }
 
-  // 2. 各ペルソナとの類似度スコアを計算（距離が小さいほどマッチ度が高い）
+  // 3. 最終質問（Q.9）で「全部まるごと外注したい（diy <= 25）」を選んでおり、かつ予算がある場合（budget >= 50）は確実に「VIP丸投げ・完全投資家オーナー型」を優先判定
+  if (score.diy <= 25 && score.budget >= 50) {
+    const primary = PERSONA_TYPES.find((p) => p.id === 'vip-full-outsource')!;
+    const secondary = PERSONA_TYPES.find((p) => p.id === 'auto-business-investor')!;
+    return { primary, secondary, normalizedScore: score };
+  }
+
+  // 4. 各ペルソナとの類似度スコアを計算（距離が小さいほどマッチ度が高い）
   const ranked = PERSONA_TYPES.map((persona) => {
     const t = persona.targetProfile;
     let distance =
@@ -634,23 +641,23 @@ export function diagnosePersona(rawScore: ScoreProfile): {
       Math.pow(score.mindset - t.mindset, 2) * 1.25;
 
     // 特定パターンのボーナス補正（より納得感のある振り分けにするため）
-    if (persona.id === 'vip-full-outsource' && score.budget >= 70 && score.diy <= 30 && score.search <= 35) {
+    if (persona.id === 'vip-full-outsource' && score.diy <= 25 && score.budget >= 50) {
+      distance *= 0.4;
+    }
+    if (persona.id === 'metro-bigbox-challenger' && score.budget >= 75 && score.mindset >= 80 && score.diy > 25) {
+      distance *= 0.6;
+    }
+    if (persona.id === 'local-diy-small' && score.budget <= 45 && score.diy >= 60 && score.attachment >= 60) {
+      distance *= 0.6;
+    }
+    if (persona.id === 'auto-business-investor' && score.search <= 45 && score.diy > 25 && score.attachment <= 45) {
       distance *= 0.55;
     }
-    if (persona.id === 'metro-bigbox-challenger' && score.budget >= 75 && score.mindset >= 80) {
+    if (persona.id === 'solid-small-meeting' && score.budget <= 45 && score.diy <= 45 && score.mindset >= 39 && score.mindset <= 65) {
       distance *= 0.6;
     }
-    if (persona.id === 'local-diy-small' && score.budget <= 45 && score.diy >= 65 && score.attachment >= 60) {
-      distance *= 0.6;
-    }
-    if (persona.id === 'auto-business-investor' && score.attachment <= 30 && score.mindset >= 60) {
-      distance *= 0.65;
-    }
-    if (persona.id === 'solid-small-meeting' && score.budget <= 40 && score.diy <= 40 && score.mindset >= 29 && score.mindset <= 60) {
-      distance *= 0.6;
-    }
-    if (persona.id === 'treasure-hunter-multi' && score.search >= 80 && score.mindset >= 70) {
-      distance *= 0.65;
+    if (persona.id === 'treasure-hunter-multi' && score.search >= 65 && score.diy >= 65) {
+      distance *= 0.55;
     }
     if (persona.id === 'mindset-reset-starter' && score.mindset <= 35) {
       distance *= 0.65;
