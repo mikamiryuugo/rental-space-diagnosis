@@ -38,7 +38,7 @@ export const QUESTIONS: Question[] = [
     category: 'BUDGET 02',
     axisLabel: '① 初期予算感（上限）',
     question: '良い物件があれば、「150万〜200万円」の投資も検討できる？',
-    subText: '大型スタジオ・複数店舗展開・または完全丸投げでのスピード立ち上げを見据えた予算感。',
+    subText: '大型店舗での開業や、完全丸投げで立ち上げる場合の予算感です。',
     iconName: 'Coins',
     yesLabel: '150万〜OK',
     noLabel: '100万円まで',
