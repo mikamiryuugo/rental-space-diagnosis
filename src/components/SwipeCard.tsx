@@ -196,14 +196,14 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
           </div>
 
           {/* カード下部のスワイプガイド */}
-          <div className="grid grid-cols-2 gap-2.5 pt-3 border-t border-slate-800 text-xs sm:text-sm font-bold z-10">
-            <div className="flex items-center gap-1.5 text-rose-200 bg-rose-950/40 border border-rose-500/30 rounded-xl px-3 py-2.5">
-              <ArrowLeft className="w-4 h-4 shrink-0 text-rose-400" />
-              <span className="truncate">{question.noLabel}</span>
+          <div className="grid grid-cols-2 gap-2 pt-3 border-t border-slate-800 text-xs font-bold z-10">
+            <div className="flex items-center gap-1 text-rose-200 bg-rose-950/40 border border-rose-500/30 rounded-xl px-2.5 py-2.5 whitespace-nowrap">
+              <ArrowLeft className="w-3.5 h-3.5 shrink-0 text-rose-400" />
+              <span>{question.noLabel}</span>
             </div>
-            <div className="flex items-center justify-end gap-1.5 text-emerald-200 bg-emerald-950/40 border border-emerald-500/30 rounded-xl px-3 py-2.5 text-right">
-              <span className="truncate">{question.yesLabel}</span>
-              <ArrowRight className="w-4 h-4 shrink-0 text-emerald-400" />
+            <div className="flex items-center justify-end gap-1 text-emerald-200 bg-emerald-950/40 border border-emerald-500/30 rounded-xl px-2.5 py-2.5 text-right whitespace-nowrap">
+              <span>{question.yesLabel}</span>
+              <ArrowRight className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
             </div>
           </div>
         </motion.div>
