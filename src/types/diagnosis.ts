@@ -45,6 +45,7 @@ export interface PersonaType {
   badgeText: string;
   budgetRange:
     | '30万〜50万円〜'
+    | '30万〜70万円'
     | '50万〜100万円'
     | '100万円前後'
     | '150万円前後'
