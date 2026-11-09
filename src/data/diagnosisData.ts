@@ -230,7 +230,7 @@ export const PERSONA_TYPES: PersonaType[] = [
     title: '【大箱・ハイリターン挑戦型】',
     catchphrase: '資金力とオーナー胆力を活かし、広めのスタジオや大型物件で本格的な収益を狙うチャレンジャー！',
     badgeText: '本格投資×大箱・高単価狙い',
-    budgetRange: '150万円前後',
+    budgetRange: '100万〜200万円前後',
     difficulty: '★★★★★ (プロ志向)',
     expectedReturn: '想定月利 5万〜25万円以上 / 1店舗',
     gradient: 'from-rose-600 via-orange-500 to-amber-500',
