@@ -7,6 +7,7 @@ import {
   Award,
   TrendingUp,
   Crown,
+  Home,
 } from 'lucide-react';
 import { PersonaType, ScoreProfile } from '../types/diagnosis';
 import { DynamicIcon } from './DynamicIcon';
@@ -18,12 +19,14 @@ interface ResultScreenProps {
   score: ScoreProfile;
   history: AnswerRecord[];
   onRestart: () => void;
+  onBackToTop: () => void;
   onSwitchPersona: (persona: PersonaType) => void;
 }
 
 export const ResultScreen: React.FC<ResultScreenProps> = ({
   primary,
   onRestart,
+  onBackToTop,
 }) => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
@@ -37,14 +40,24 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
           <Award className="w-3.5 h-3.5 text-amber-400" />
           <span>診断結果</span>
         </div>
-        <button
-          type="button"
-          onClick={onRestart}
-          className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-white transition"
-        >
-          <RotateCcw className="w-3.5 h-3.5" />
-          <span>もう一度診断する</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onRestart}
+            className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-white transition"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>もう一度診断</span>
+          </button>
+          <button
+            type="button"
+            onClick={onBackToTop}
+            className="inline-flex items-center gap-1 text-xs text-slate-400 hover:text-white transition"
+          >
+            <Home className="w-3.5 h-3.5" />
+            <span>トップに戻る</span>
+          </button>
+        </div>
       </div>
 
       {/* ① メイン結果カード（ペルソナヒーロー） */}
@@ -174,15 +187,25 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
         </div>
       </div>
 
-      {/* もう一度診断するボタン */}
-      <button
-        type="button"
-        onClick={onRestart}
-        className="w-full py-3.5 px-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition active:scale-95"
-      >
-        <RotateCcw className="w-4 h-4" />
-        <span>最初からもう一度診断する</span>
-      </button>
+      {/* もう一度診断する / トップに戻るボタン */}
+      <div className="space-y-2.5">
+        <button
+          type="button"
+          onClick={onRestart}
+          className="w-full py-3.5 px-5 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm flex items-center justify-center gap-2 transition active:scale-95"
+        >
+          <RotateCcw className="w-4 h-4" />
+          <span>最初からもう一度診断する</span>
+        </button>
+        <button
+          type="button"
+          onClick={onBackToTop}
+          className="w-full py-2.5 px-5 rounded-xl text-slate-400 hover:text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition"
+        >
+          <Home className="w-3.5 h-3.5" />
+          <span>トップページに戻る</span>
+        </button>
+      </div>
     </div>
   );
 };

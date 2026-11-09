@@ -35,6 +35,16 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
   };
 
+  // トップ画面に戻る
+  const handleBackToTop = () => {
+    setScore(INITIAL_SCORE);
+    setCurrentIndex(0);
+    setHistory([]);
+    setCustomPrimary(null);
+    setScreen('start');
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  };
+
   // 質問への回答処理（はい / いいえ）
   const handleAnswer = (isYes: boolean) => {
     if (screen !== 'quiz') return;
@@ -122,6 +132,7 @@ export const App: React.FC = () => {
             totalQuestions={QUESTIONS.length}
             onAnswer={handleAnswer}
             onUndo={handleUndo}
+            onBackToTop={handleBackToTop}
             canUndo={history.length > 0}
           />
         )}
@@ -133,6 +144,7 @@ export const App: React.FC = () => {
             score={diagnosisResult.normalizedScore}
             history={history}
             onRestart={handleStart}
+            onBackToTop={handleBackToTop}
             onSwitchPersona={(persona) => {
               setCustomPrimary(persona);
               setScore(persona.targetProfile);

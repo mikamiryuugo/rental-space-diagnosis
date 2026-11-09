@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion';
-import { Check, X, RotateCcw, Sparkles } from 'lucide-react';
+import { Check, X, RotateCcw, Home } from 'lucide-react';
 import { Question } from '../types/diagnosis';
 import { DynamicIcon } from './DynamicIcon';
 
@@ -11,6 +11,7 @@ interface SwipeCardProps {
   totalQuestions: number;
   onAnswer: (isYes: boolean) => void;
   onUndo: () => void;
+  onBackToTop: () => void;
   canUndo: boolean;
 }
 
@@ -21,6 +22,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
   totalQuestions,
   onAnswer,
   onUndo,
+  onBackToTop,
   canUndo,
 }) => {
   const [exitX, setExitX] = useState<number | null>(null);
@@ -75,7 +77,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
       <div className="w-full space-y-2.5">
         <div className="flex items-center justify-between text-xs sm:text-sm font-bold text-slate-200">
           <div className="flex items-center gap-2">
-            {canUndo ? (
+            {canUndo && (
               <button
                 type="button"
                 onClick={onUndo}
@@ -84,12 +86,15 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                 <RotateCcw className="w-4 h-4" />
                 <span>1つ戻る</span>
               </button>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-500/25 text-indigo-200 border border-indigo-400/40">
-                <Sparkles className="w-4 h-4" />
-                <span>直感スワイプ診断</span>
-              </span>
             )}
+            <button
+              type="button"
+              onClick={onBackToTop}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition active:scale-95"
+            >
+              <Home className="w-3.5 h-3.5" />
+              <span>トップに戻る</span>
+            </button>
           </div>
           <div className="flex items-baseline gap-1 font-mono text-base">
             <span className="font-black text-indigo-400">Q.{currentIndex + 1}</span>
