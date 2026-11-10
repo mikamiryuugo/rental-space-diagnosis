@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, ChevronRight } from 'lucide-react';
+import { Sparkles, Play, ChevronRight } from 'lucide-react';
 import { QUESTIONS } from '../data/diagnosisData';
 import { PersonaType } from '../types/diagnosis';
 
@@ -18,8 +18,13 @@ export const StartScreen: React.FC<StartScreenProps> = ({
       <motion.div
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col items-center text-center space-y-5"
+        className="flex flex-col items-center text-center space-y-4"
       >
+        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gradient-to-r from-indigo-500/25 via-purple-500/25 to-pink-500/25 border border-indigo-400/40 text-indigo-200 text-sm font-bold shadow-sm">
+          <Sparkles className="w-4 h-4 text-amber-400" />
+          <span>開業スタイル診断</span>
+        </div>
+
         <h1 className="text-[26px] sm:text-3xl font-black tracking-tight leading-snug">
           あなたの予算×性格でわかる！
           <span className="block mt-1.5 bg-gradient-to-r from-amber-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent">
