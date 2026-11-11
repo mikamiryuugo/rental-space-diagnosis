@@ -28,7 +28,7 @@ export const StartScreen: React.FC<StartScreenProps> = ({
         <h1 className="text-[26px] sm:text-3xl font-black tracking-tight leading-snug">
           あなたの予算×性格でわかる！
           <span className="block mt-1.5 bg-gradient-to-r from-amber-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent">
-            「手放しで勝てるレンスペ開業」
+            「レンタルスペース開業」
           </span>
           適性診断
         </h1>
