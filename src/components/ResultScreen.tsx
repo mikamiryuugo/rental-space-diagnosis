@@ -8,6 +8,8 @@ import {
   TrendingUp,
   Crown,
   Home,
+  MessageCircle,
+  ExternalLink,
 } from 'lucide-react';
 import { PersonaType, ScoreProfile } from '../types/diagnosis';
 import { DynamicIcon } from './DynamicIcon';
@@ -185,6 +187,17 @@ export const ResultScreen: React.FC<ResultScreenProps> = ({
             {primary.recommendedCourse.reason}
           </p>
         </div>
+
+        <a
+          href="https://lin.ee/N8vFhw0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full py-4 px-5 rounded-2xl bg-[#06C755] hover:bg-[#05b34c] text-white font-black text-base sm:text-lg shadow-[0_8px_24px_rgba(6,199,85,0.35)] flex items-center justify-center gap-2 transition active:scale-95"
+        >
+          <MessageCircle className="w-5 h-5 fill-current" />
+          <span>公式LINEはこちら</span>
+          <ExternalLink className="w-4 h-4 opacity-90" />
+        </a>
       </div>
 
       {/* もう一度診断する / トップに戻るボタン */}
