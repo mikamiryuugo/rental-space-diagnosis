@@ -9,6 +9,8 @@ export interface ScoreProfile {
   search: number;
   /** 5. リスク・マインド (0〜100: 手堅く・他責傾向 vs ハイリターン・自責思考) */
   mindset: number;
+  /** 6. パーティールーム志向（手間がかかっても利益を優先するか） */
+  party?: number;
 }
 
 export interface Question {
@@ -47,6 +49,7 @@ export interface PersonaType {
     | '30万〜50万円〜'
     | '30万〜70万円'
     | '50万〜100万円'
+    | '80万〜200万円'
     | '100万円前後'
     | '100万〜200万円前後'
     | '150万円前後'

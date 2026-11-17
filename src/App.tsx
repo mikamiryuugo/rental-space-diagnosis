@@ -73,6 +73,7 @@ export const App: React.FC = () => {
       attachment: score.attachment + (effect.attachment ?? 0),
       search: score.search + (effect.search ?? 0),
       mindset: score.mindset + (effect.mindset ?? 0),
+      party: (score.party ?? 50) + (effect.party ?? 0),
     };
     setScore(updatedScore);
 

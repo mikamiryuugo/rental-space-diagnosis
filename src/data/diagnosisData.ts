@@ -6,6 +6,7 @@ export const INITIAL_SCORE: ScoreProfile = {
   attachment: 50,
   search: 50,
   mindset: 50,
+  party: 50,
 };
 
 export const QUESTIONS: Question[] = [
@@ -59,8 +60,20 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 5,
+    category: 'PROFIT 01',
+    axisLabel: '② 手間と利益のバランス',
+    question: '管理や清掃の手間が多少増えても、「利益の大きさ」を優先したい？',
+    subText: '手間が少ない「スタジオ・会議室・サロン」か、少し手間はかかるが高収益を狙える「パーティールーム」かの確認です。',
+    iconName: 'Sparkles',
+    yesLabel: '利益を優先！',
+    noLabel: '手間の少なさ優先',
+    yesEffect: { party: 40, budget: 10, mindset: 10 },
+    noEffect: { party: -30 },
+  },
+  {
+    id: 6,
     category: 'AREA 01',
-    axisLabel: '② エリアのこだわり',
+    axisLabel: '③ エリアのこだわり',
     question: '「ここに出したい！」というこだわりのエリアがある？',
     subText: '出したい場所が決まっているか、事業と割り切って遠隔でもどこでもOKか。',
     iconName: 'MapPin',
@@ -70,7 +83,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { attachment: -35, mindset: 15 },
   },
   {
-    id: 6,
+    id: 7,
     category: 'SEARCH 01',
     axisLabel: '④ 物件リサーチ耐性',
     question: 'ネットで物件情報を検索したり、リサーチするのは好き？',
@@ -82,7 +95,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { search: -25 },
   },
   {
-    id: 7,
+    id: 8,
     category: 'STYLE 01',
     axisLabel: '⑤ 自力チャレンジ志向',
     question: '最初は時間がかかっても、「まずは自分でやってみたい」？',
@@ -94,7 +107,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { search: -15, diy: -20 },
   },
   {
-    id: 8,
+    id: 9,
     category: 'OUTSOURCE 01',
     axisLabel: '⑤ 物件探しの外注志向',
     question: '一番大変な「物件探し」は、お金がかかっても外注したい？',
@@ -106,7 +119,7 @@ export const QUESTIONS: Question[] = [
     noEffect: { search: 25, diy: 10 },
   },
   {
-    id: 9,
+    id: 10,
     category: 'OUTSOURCE 02',
     axisLabel: '⑤ 立ち上げ丸投げ志向',
     question: '物件探しから現地設営まで、「全部まるごと外注」したい？',
@@ -432,11 +445,64 @@ export const PERSONA_TYPES: PersonaType[] = [
       mindset: 10,
     },
   },
+  {
+    id: 'party-room-challenger',
+    code: 'TYPE 07',
+    title: '【高収益・爆発力重視！パーティールーム挑戦型】',
+    catchphrase: '多少の手間は厭わず利益を追求！単価と稼働率を高めて爆発的な収益を狙うアグレッシブ型！',
+    badgeText: '利益優先×パーティールーム開業',
+    budgetRange: '80万〜200万円',
+    difficulty: '★★★★☆ (本格派)',
+    expectedReturn: '想定月利 3万〜20万円 / 1店舗',
+    gradient: 'from-pink-600 via-fuchsia-600 to-purple-600',
+    accentColor: 'pink',
+    iconName: 'Sparkles',
+    description:
+      '「管理や清掃の手間が多少かかっても、とにかく利益の大きさや回収スピードを追いたい！」というアグレッシブなあなたには、単価と稼働率を高めやすい【パーティールーム】が最適です。スタジオや会議室に比べてゴミ処理や清掃・騒音対策などの管理コストは増えますが、内装の作り込みや繁忙期（クリスマス・年末年始・歓送迎会シーズンなど）の爆発力を活かして、月3万〜20万円の高い利益を狙うことができます。',
+    strengths: [
+      '大人数利用やオプション課金・繁忙期の単価アップにより、1店舗あたりの利益上限を大きく伸ばせる',
+      '内装の映えやコンセプト設計で周辺競合と差別化しやすく、集客の爆発力を作れる',
+      '清掃体制やハウスルールをしっかり仕組み化できれば、高利回りな店舗として運営可能',
+    ],
+    weaknesses: [
+      '飲食・飲酒を伴うため、騒音クレームや汚損・ゴミ放置が起きない物件選びと運営ルール設計が必須',
+      'スタジオやサロンに比べると備品の消耗や清掃の手間が発生するため、外注スタッフとの連携がカギになる',
+    ],
+    strategy: {
+      areaAndProperty:
+        '繁華街や主要駅からアクセスしやすく、かつ近隣トラブルになりにくい構造・テナントの許可物件を厳選します。',
+      conceptAndSetup:
+        'ターゲット（女子会・推し活・懇親会など）が思わず予約したくなる内装と写真を仕上げ、高単価でも選ばれる部屋を作ります。',
+      operationStyle:
+        'スマートロック・自動メッセージで案内を自動化し、清掃スタッフへのチェックリスト共有で現場の手間を最小限に抑えます。',
+    },
+    recommendedSpaceTypes: ['高収益パーティールーム', '推し活・女子会・撮影スペース', '大型懇親会・イベントスペース'],
+    recommendedCourse: {
+      name: '開業保証コース',
+      badge: '高収益パーティールーム構築に最適',
+      reason:
+        '手間を許容してでもしっかり利益を取りたいあなたには、トラブルを防ぐ物件選定基準から「予約が入る内装・ページ作り」「清掃外注・自動化の仕組み」まで現役オーナーに直接相談しながら進められる『開業保証コース』が最適です！',
+      features: [
+        'パーティールームで失敗しないための物件選び・近隣トラブル回避ノウハウ',
+        'ライバルに勝つためのコンセプト設計・写真撮影・ポータル＆自社集客の構築',
+        '1年経っても開業できない場合は無償でサポート延長される安心の「開業保証」付き',
+      ],
+    },
+    lineBenefitHighlight: '高利益を狙うパーティールームの物件選定とトラブル防止・運営ノウハウ',
+    targetProfile: {
+      budget: 75,
+      diy: 65,
+      attachment: 55,
+      search: 65,
+      mindset: 80,
+      party: 90,
+    },
+  },
 ];
 
 /**
  * ユーザーの回答スコア（0〜100にクランプ済み）から最適な診断結果タイプを判定する関数
- * 明確な優先ルール＋類似度スコアで全6タイプに1対1で振り分ける
+ * 明確な優先ルールで全7タイプに1対1で振り分ける
  */
 export function diagnosePersona(rawScore: ScoreProfile): {
   primary: PersonaType;
@@ -451,6 +517,7 @@ export function diagnosePersona(rawScore: ScoreProfile): {
     attachment: clamp(rawScore.attachment),
     search: clamp(rawScore.search),
     mindset: clamp(rawScore.mindset),
+    party: clamp(rawScore.party ?? 50),
   };
 
   // 1. 初期予算が100万円以下（budget <= 45）かつ「失敗したら困る」（mindset <= 38）場合は「TYPE 06：今はやらない方がいい」を最優先判定
@@ -460,35 +527,42 @@ export function diagnosePersona(rawScore: ScoreProfile): {
     return { primary, secondary, normalizedScore: score };
   }
 
-  // 2. 最終質問（Q.9）で「全部まるごと外注したい（diy <= 25）」を選んでおり、かつ予算がある場合（budget >= 45）は「TYPE 05：完全丸投げ・投資家オーナー型」を判定
+  // 2. 最終質問（Q.10）で「全部まるごと外注したい（diy <= 25）」を選んでおり、かつ予算がある場合（budget >= 45）は「TYPE 05：完全丸投げ・投資家オーナー型」を判定
   if (score.diy <= 25 && score.budget >= 45) {
     const primary = PERSONA_TYPES.find((p) => p.id === 'vip-full-outsource')!;
     const secondary = PERSONA_TYPES.find((p) => p.id === 'property-search-outsource')!;
     return { primary, secondary, normalizedScore: score };
   }
 
-  // 3. Q.8で「物件探しは外注したい（search <= 40）」かつ Q.9は「設営は自分で（diy > 25）」を選んでおり、予算がある場合（budget >= 45）は「TYPE 04：効率重視！物件探し外注型」を判定
+  // 3. Q.9で「物件探しは外注したい（search <= 40）」かつ Q.10は「設営は自分で（diy > 25）」を選んでおり、予算がある場合（budget >= 45）は「TYPE 04：効率重視！物件探し外注型」を判定
   if (score.search <= 40 && score.diy > 25 && score.budget >= 45) {
     const primary = PERSONA_TYPES.find((p) => p.id === 'property-search-outsource')!;
     const secondary = PERSONA_TYPES.find((p) => p.id === 'standard-starter')!;
     return { primary, secondary, normalizedScore: score };
   }
 
-  // 4. 予算150万円〜（budget >= 75）で大きく狙う場合は「TYPE 03：大箱・ハイリターン挑戦型」を判定
+  // 4. Q.5で「手間が多少増えても利益の大きさを優先したい（party >= 70）」を選んでおり、かつ極小予算のみではない場合（budget >= 45）は「TYPE 07：高収益・爆発力重視！パーティールーム挑戦型」を判定
+  if ((score.party ?? 50) >= 70 && score.budget >= 45) {
+    const primary = PERSONA_TYPES.find((p) => p.id === 'party-room-challenger')!;
+    const secondary = PERSONA_TYPES.find((p) => p.id === 'bigbox-challenger')!;
+    return { primary, secondary, normalizedScore: score };
+  }
+
+  // 5. 予算150万円〜（budget >= 75）で大きく狙う場合は「TYPE 03：大箱・ハイリターン挑戦型」を判定
   if (score.budget >= 75) {
     const primary = PERSONA_TYPES.find((p) => p.id === 'bigbox-challenger')!;
     const secondary = PERSONA_TYPES.find((p) => p.id === 'property-search-outsource')!;
     return { primary, secondary, normalizedScore: score };
   }
 
-  // 5. スモールスタート希望または予算30〜70万円（budget <= 45）の場合は「TYPE 01：少額・ローリスク！スモールスタート型」を判定
+  // 6. スモールスタート希望または予算30〜70万円（budget <= 45）の場合は「TYPE 01：少額・ローリスク！スモールスタート型」を判定
   if (score.budget <= 45) {
     const primary = PERSONA_TYPES.find((p) => p.id === 'small-start')!;
     const secondary = PERSONA_TYPES.find((p) => p.id === 'standard-starter')!;
     return { primary, secondary, normalizedScore: score };
   }
 
-  // 6. それ以外（予算50〜100万円前後でまずは自分でやってみたい王道層）は「TYPE 02：王道バランス！スタンダード開業型」を判定
+  // 7. それ以外（予算50〜100万円前後でまずは自分でやってみたい王道層）は「TYPE 02：王道バランス！スタンダード開業型」を判定
   const primary = PERSONA_TYPES.find((p) => p.id === 'standard-starter')!;
   const secondary = PERSONA_TYPES.find((p) => p.id === 'small-start')!;
   return { primary, secondary, normalizedScore: score };
