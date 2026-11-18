@@ -48,6 +48,7 @@ export interface PersonaType {
   budgetRange:
     | '30万〜50万円〜'
     | '30万〜70万円'
+    | '30万〜80万円'
     | '50万〜100万円'
     | '80万〜200万円'
     | '100万円前後'
